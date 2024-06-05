@@ -2,17 +2,11 @@
   "packList": [
     {
       "id": "abc123",
-      "players": [
-        "KICKFLIP",
-        "Chalk"
-      ]
+      "players": ["KICKFLIP","Chalk"]
     },
     {
       "id": "banana",
-      "players": [
-        "KICKFLIP",
-        "Flafjr"
-      ]
+      "players": ["KICKFLIP","Flafjr"]
     }
   ]
 }
