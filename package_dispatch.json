@@ -7,6 +7,10 @@
     {
       "id": "banana",
       "players": ["KICKFLIP","Flafjr"]
+    },
+    {
+      "id": "bananaABC",
+      "players": ["Mark","Flafjr"]
     }
   ]
 }
