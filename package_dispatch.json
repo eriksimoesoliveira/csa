@@ -2,7 +2,7 @@
   "packList": [
     {
       "id": "11111",
-      "players": ["Chalk", "KICK"]
+      "players": ["CHALK", "KICK"]
     },
     {
       "id": "11114",
@@ -10,11 +10,11 @@
     },
     {
       "id": "11115",
-      "players": ["KICK","Chalk"]
+      "players": ["KICK","CHALK"]
     },
     {
       "id": "11116",
-      "players": ["KICK","Chalk"]
+      "players": ["KICK","CHALK"]
     },
   ]
 }
