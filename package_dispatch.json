@@ -1,20 +1,16 @@
 {
   "packList": [
     {
-      "id": "11111",
-      "players": ["CHALK", "KICK"]
+      "id": "195049874",
+      "players": ["RAFA", "KICK", "ELVIS", "FREE", "CHALK"]
     },
     {
-      "id": "11114",
-      "players": ["CHALK", "KICK"]
+      "id": "195049874-V",
+      "players": ["RAFA", "KICK", "ELVIS", "FREE", "CHALK"]
     },
     {
-      "id": "11115",
-      "players": ["KICK","CHALK"]
-    },
-    {
-      "id": "11116",
-      "players": ["KICK","CHALK"]
+      "id": "195034555",
+      "players": ["CNIDA", "RAFA", "FLAFJR", "NOTPRO", "BNO"]
     },
   ]
 }
