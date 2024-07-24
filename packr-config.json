@@ -1,0 +1,13 @@
+{
+   "platform": "windows64",
+   "jdk": "D:\\ChromeDownloads\\OpenJDK11U-jdk_x64_windows_hotspot_11.0.23_9.zip",
+   "executable": "csa",
+   "classpath": [
+     "D:\\Projetos\\CS2Proj\\desktop\\build\\libs\\desktop-1.0.jar"
+   ],
+   "mainclass": "com.eriks.desktop.DesktopLauncher",
+   "vmargs": [
+     "Xmx1G"
+   ],
+   "output": "D:\\Projetos\\CS2Proj-Pack\\"
+ }

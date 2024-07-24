@@ -1,0 +1,127 @@
+package com.eriks.core.ui.screen.v2.dialogs
+
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog
+import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.eriks.core.GameController
+import com.eriks.core.objects.Card
+import com.eriks.core.ui.screen.v2.CardGroup
+import com.eriks.core.ui.util.ImageCache
+import com.eriks.core.ui.util.UIUtil
+
+class OpenPackageDialog: FullScreenDialog(true) {
+
+    lateinit var packageIcon: Image
+    lateinit var packageId: String
+
+    override fun show(stage: Stage?): Dialog {
+
+        initializeContent()
+
+        return super.show(stage)
+    }
+
+    private fun initializeContent() {
+        packageIcon = ImageCache.getImage("ui/package2.png")
+
+        UIUtil.resizeProportional(300f, packageIcon)
+
+        packageIcon.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                GameController.openPackage(packageId, ::openPackageAnimation1)
+            }
+        })
+        UIUtil.centerBySize(packageIcon, prefWidth, prefHeight)
+        addActor(packageIcon)
+    }
+
+    private fun openPackageAnimation1(cards: List<Card>) {
+        packageIcon.remove()
+
+        val packageOpenedIcon = ImageCache.getImage("ui/package2-open.png")
+        UIUtil.resizeProportional(300f, packageOpenedIcon)
+        UIUtil.centerBySize(packageOpenedIcon, prefWidth, prefHeight)
+        addActor(packageOpenedIcon)
+
+        packageOpenedIcon.addAction(SequenceAction(
+            Actions.delay(.3f),
+            Actions.moveTo(packageOpenedIcon.x, -500f, .5f),
+            Actions.removeActor(packageOpenedIcon)
+        ))
+
+        val card1 = CardGroup(cards[0], false, false, GameController.getCardInfo(cards[0]))
+        card1.rotateBy(90f)
+        card1.x = 810 + 230f
+        card1.y = 320 + 180f
+        addActor(card1)
+
+        val card2 = CardGroup(cards[1], false, false, GameController.getCardInfo(cards[1]))
+        card2.rotateBy(90f)
+        card2.x = 810 + 230f
+        card2.y = 320 + 160f
+        addActor(card2)
+
+        val card3 = CardGroup(cards[2], false, false, GameController.getCardInfo(cards[2]))
+        card3.rotateBy(90f)
+        card3.x = 810 + 230f
+        card3.y = 320 + 140f
+        addActor(card3)
+
+        val card4 = CardGroup(cards[3], false, false, GameController.getCardInfo(cards[3]))
+        card4.rotateBy(90f)
+        card4.x = 810 + 230f
+        card4.y = 320 + 120f
+        addActor(card4)
+
+        val card5 = CardGroup(cards[4], false, false, GameController.getCardInfo(cards[4]))
+        card5.rotateBy(90f)
+        card5.x = 810 + 230f
+        card5.y = 320 + 100f
+        addActor(card5)
+
+        card5.addAction(SequenceAction(
+            Actions.delay(.3f),
+            Actions.parallel(
+                Actions.rotateBy(-90f, .3f),
+                Actions.moveTo(575f, 600f, .3f)
+            )
+        ))
+
+        card4.addAction(SequenceAction(
+            Actions.delay(.3f),
+            Actions.parallel(
+                Actions.rotateBy(-90f, .3f),
+                Actions.moveTo(975f, 600f, .3f)
+            )
+        ))
+
+        card3.addAction(SequenceAction(
+            Actions.delay(.3f),
+            Actions.parallel(
+                Actions.rotateBy(-90f, .3f),
+                Actions.moveTo(375f, 350f, .3f)
+            )
+        ))
+
+        card2.addAction(SequenceAction(
+            Actions.delay(.3f),
+            Actions.parallel(
+                Actions.rotateBy(-90f, .3f),
+                Actions.moveTo(775f, 350f, .3f)
+            )
+        ))
+
+        card1.addAction(SequenceAction(
+            Actions.delay(.3f),
+            Actions.parallel(
+                Actions.rotateBy(-90f, .3f),
+                Actions.moveTo(1175f, 350f, .3f)
+            )
+        ))
+    }
+
+}
