@@ -925,7 +925,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: Heavitas
-			file: D:/Projetos/CS2Proj/core/assets/skin/Heavitas.ttf
+			file: D:/Projetos/csa/core/assets/skin/Heavitas.ttf
 			previewTTF: Heavitas
 			useCustomSerializer: true
 			size: 16
@@ -954,7 +954,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: Heavitas-32
-			file: D:/Projetos/CS2Proj/core/assets/skin/Heavitas.ttf
+			file: D:/Projetos/csa/core/assets/skin/Heavitas.ttf
 			previewTTF: Heavitas
 			useCustomSerializer: true
 			size: 32
@@ -983,7 +983,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: Heavitas-64
-			file: D:/Projetos/CS2Proj/core/assets/skin/Heavitas.ttf
+			file: D:/Projetos/csa/core/assets/skin/Heavitas.ttf
 			previewTTF: Heavitas
 			useCustomSerializer: true
 			size: 64
@@ -3881,7 +3881,7 @@ preferences: {
 	}
 	last-import-export-path: {
 		class: java.lang.String
-		value: D:/Projetos/CS2Proj/core/assets/skin/skin.json
+		value: D:/Projetos/csa/core/assets/skin/skin.json
 	}
 	resources-relative: {
 		class: java.lang.Boolean
@@ -3892,7 +3892,7 @@ preferences: {
 		value: 30
 	}
 }
-saveFile: D:/Projetos/CS2Proj/core/assets/skin/skin.scmp
+saveFile: D:/Projetos/csa/core/assets/skin/skin.scmp
 version: 58
 sceneComposer: null
 }

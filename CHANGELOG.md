@@ -1,7 +1,7 @@
 # Change Log
 
-## 1.0.5 (2024-07-)
-> [!WARNING] **Move your csa.db file to %LOCALAPPDATA%\csa folder before executing this version if you don't want to lose the current save**  
+## 1.0.5 (2024-07-25)
+> [!WARNING] **If you want to continue your current save, move your old csa.db file to %LOCALAPPDATA%\csa folder after executing this version**  
 - Art: Removed "fire effect" from Cards backgrounds
 - Art: Made Card condition masks less aggressive
 - Project: csa.db file now is created in the %LOCALAPPDATA% folder (Windows)

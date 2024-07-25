@@ -13,7 +13,7 @@ import java.util.*
 
 object GameController {
 
-    const val VERSION = "1.0.4"
+    const val VERSION = "1.0.5"
     var isVersionValid = false
 
     private val logger = LoggerConfig.getLogger()
