@@ -273,7 +273,7 @@ class MainScreen: CSAScreen() {
     }
 
     private fun closeHandDialogCallBack() {
-        changeBoard(currentCollection)
+        changeBoard(Family.KILOWATT_CASE)
     }
 
 }

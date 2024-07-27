@@ -32,8 +32,13 @@ enum class CollectionTaskEnum(val family: Family, val weaponFloat: Condition, va
     AGENTS1_WW(Family.AGENTS_1, Condition.WELL_WORN, "Complete Agents 1 Collection (WW)", 400),
     AGENTS1_FT(Family.AGENTS_1, Condition.FIELD_TESTED, "Complete Agents 1 Collection (FT)", 600),
     AGENTS1_MW(Family.AGENTS_1, Condition.MINIMAL_WEAR, "Complete Agents 1 Collection (MW)", 800),
-    AGENTS1_FN(Family.AGENTS_1, Condition.FACTORY_NEW, "Complete Agents 1 Collection (FN)", 1000);
+    AGENTS1_FN(Family.AGENTS_1, Condition.FACTORY_NEW, "Complete Agents 1 Collection (FN)", 1000),
 
+    MIRAGE_BS(Family.MIRAGE, Condition.BATTLE_SCARRED, "Complete Mirage Collection (BS)", 200),
+    MIRAGE_WW(Family.MIRAGE, Condition.WELL_WORN, "Complete Mirage Collection (WW)", 400),
+    MIRAGE_FT(Family.MIRAGE, Condition.FIELD_TESTED, "Complete Mirage Collection (FT)", 600),
+    MIRAGE_MW(Family.MIRAGE, Condition.MINIMAL_WEAR, "Complete Mirage Collection (MW)", 800),
+    MIRAGE_FN(Family.MIRAGE, Condition.FACTORY_NEW, "Complete Mirage Collection (FN)", 1000);
 
     companion object {
         fun getTasksForCollection(family: Family): List<CollectionTaskEnum> {

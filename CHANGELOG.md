@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.0 (2024-07-27)
+- Feature: Added Mirage Board Tasks
+- Bug Fix: When closing HandCards the KILOWATT board will be selected
+
 ## 1.1.2 (2024-07-27)
 - Feature: Added Mirage Board
 - Art: Created mosaic art and new "Full Layout" Cards
