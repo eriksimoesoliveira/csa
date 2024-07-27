@@ -128,7 +128,7 @@ enum class CardBluePrint(val friendlyName: String,
     AGENT_LTCOMMANDERRICKSAW("Lt Commander Ricksaw", Family.AGENTS_1, Rarity.COVERT, 100, "wp2/WEAPONS/AGENTS1/LTCOMMANDERRICKSAW.png"),
 
     //MIRAGE
-    MIRAGE_LOGO("Mirage Logo", Family.MIRAGE, Rarity.MIL_SPEC, 101, "wp2/WEAPONS/MIRAGE/MIRAGE-LOGO.png"),
+    MIRAGE_LOGO("Mirage Logo", Family.MIRAGE, Rarity.MIL_SPEC, 101, "wp2/WEAPONS/MIRAGE/mirage-logo.png"),
     MIRAGE_102("Bomb A", Family.MIRAGE, Rarity.CLASSIFIED, 102, "wp2/WEAPONS/MIRAGE/102.png", true),
     MIRAGE_103("Bomb B", Family.MIRAGE, Rarity.CLASSIFIED, 103, "wp2/WEAPONS/MIRAGE/103.png", true),
     MIRAGE_104("Mid", Family.MIRAGE, Rarity.CLASSIFIED, 104, "wp2/WEAPONS/MIRAGE/104.png", true),
