@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.1.2 (2024-07-27)
+- Feature: Added Mirage Board
+- Art: Created mosaic art and new "Full Layout" Cards
+- Feature: Added mosaic concepts (FreeLayoutBoardGroups)
+- Feature: Added fullimage cards concept
+- Bug Fix: Fixed a bug where boards were not refreshing when placing cards
+- Bug Fix: Fixed Shop Total only refreshing when changing quantities
+
 ## 1.0.5 (2024-07-25)
 > [!WARNING] **If you want to continue your current save, move your old csa.db file to %LOCALAPPDATA%\csa folder after executing this version**  
 - Art: Removed "fire effect" from Cards backgrounds

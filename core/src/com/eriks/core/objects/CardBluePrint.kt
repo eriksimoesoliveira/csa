@@ -4,7 +4,8 @@ enum class CardBluePrint(val friendlyName: String,
                          val family: Family,
                          val rarity: Rarity,
                          val albumPosition: Int,
-                         val imageName: String = "WP/NO-IMAGE.png") {
+                         val imageName: String = "WP/NO-IMAGE.png",
+                         val fullImage: Boolean = false) {
     //KILOWATT CASE
     KILOWATT_CASE("KILOWATT CASE", Family.KILOWATT_CASE, Rarity.MIL_SPEC, 1, "wp2/WEAPONS/KILOWATT/CASE-KILOWATT.png"),
     DUAL_HIDEOUT("DUAL BERETTAS | Hideout", Family.KILOWATT_CASE, Rarity.MIL_SPEC, 2, "wp2/WEAPONS/KILOWATT/BERETAS-HIDEOUT.png"),
@@ -125,5 +126,27 @@ enum class CardBluePrint(val friendlyName: String,
     AGENT_SIRBLOODYMIAMIDARRYL("Sir Bloody Miami Darryl", Family.AGENTS_1, Rarity.COVERT, 98, "wp2/WEAPONS/AGENTS1/SIRBLOODYMIAMIDARRYL.png"),
     AGENT_CMDRDAVIDAGOGGLESFERNANDEZ("Cmdr David A Goggles Fernandez", Family.AGENTS_1, Rarity.COVERT, 99, "wp2/WEAPONS/AGENTS1/CMDRDAVIDAGOGGLESFERNANDEZ.png"),
     AGENT_LTCOMMANDERRICKSAW("Lt Commander Ricksaw", Family.AGENTS_1, Rarity.COVERT, 100, "wp2/WEAPONS/AGENTS1/LTCOMMANDERRICKSAW.png"),
+
+    //MIRAGE
+    MIRAGE_LOGO("Mirage Logo", Family.MIRAGE, Rarity.MIL_SPEC, 101, "wp2/WEAPONS/MIRAGE/MIRAGE-LOGO.png"),
+    MIRAGE_102("Bomb A", Family.MIRAGE, Rarity.CLASSIFIED, 102, "wp2/WEAPONS/MIRAGE/102.png", true),
+    MIRAGE_103("Bomb B", Family.MIRAGE, Rarity.CLASSIFIED, 103, "wp2/WEAPONS/MIRAGE/103.png", true),
+    MIRAGE_104("Mid", Family.MIRAGE, Rarity.CLASSIFIED, 104, "wp2/WEAPONS/MIRAGE/104.png", true),
+    MIRAGE_105("Coldzera Grafiti", Family.MIRAGE, Rarity.CLASSIFIED, 105, "wp2/WEAPONS/MIRAGE/105.png", true),
+    MIRAGE_106("Mosaico 1", Family.MIRAGE, Rarity.RESTRICTED, 106, "wp2/WEAPONS/MIRAGE/106.png", true),
+    MIRAGE_107("Mosaico 2", Family.MIRAGE, Rarity.RESTRICTED, 107, "wp2/WEAPONS/MIRAGE/107.png", true),
+    MIRAGE_108("Mosaico 3", Family.MIRAGE, Rarity.RESTRICTED, 108, "wp2/WEAPONS/MIRAGE/108.png", true),
+    MIRAGE_109("Mosaico 4", Family.MIRAGE, Rarity.RESTRICTED, 109, "wp2/WEAPONS/MIRAGE/109.png", true),
+    MIRAGE_110("Mosaico 5", Family.MIRAGE, Rarity.RESTRICTED, 110, "wp2/WEAPONS/MIRAGE/110.png", true),
+    MIRAGE_111("Mosaico 6", Family.MIRAGE, Rarity.RESTRICTED, 111, "wp2/WEAPONS/MIRAGE/111.png", true),
+    MIRAGE_112("Mosaico 7", Family.MIRAGE, Rarity.RESTRICTED, 112, "wp2/WEAPONS/MIRAGE/112.png", true),
+    MIRAGE_113("Mosaico 8", Family.MIRAGE, Rarity.RESTRICTED, 113, "wp2/WEAPONS/MIRAGE/113.png", true),
+    MIRAGE_114("Mosaico 9", Family.MIRAGE, Rarity.RESTRICTED, 114, "wp2/WEAPONS/MIRAGE/114.png", true),
+    MIRAGE_115("Mosaico 10", Family.MIRAGE, Rarity.RESTRICTED, 115, "wp2/WEAPONS/MIRAGE/115.png", true),
+    MIRAGE_116("Mosaico 11", Family.MIRAGE, Rarity.RESTRICTED, 116, "wp2/WEAPONS/MIRAGE/116.png", true),
+    MIRAGE_117("Mosaico 12", Family.MIRAGE, Rarity.RESTRICTED, 117, "wp2/WEAPONS/MIRAGE/117.png", true),
+    MIRAGE_118("Awp 1", Family.MIRAGE, Rarity.COVERT, 118, "wp2/WEAPONS/MIRAGE/118.png", true),
+    MIRAGE_119("Awp 2", Family.MIRAGE, Rarity.COVERT, 119, "wp2/WEAPONS/MIRAGE/119.png", true),
+    MIRAGE_120("Awp 3", Family.MIRAGE, Rarity.COVERT, 120, "wp2/WEAPONS/MIRAGE/120.png", true),
 
 }

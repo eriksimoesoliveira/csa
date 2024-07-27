@@ -10,7 +10,7 @@ import com.eriks.core.ui.screen.v2.dialogs.FullScreenCardDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
 
-class CardPlaceGroup(private val number: Int, card: Card?): Group() {
+class CardPlaceGroup(private val number: Int, card: Card?, placeHolder: PlaceHolderEnum = PlaceHolderEnum.FULL): Group() {
 
     init {
 
@@ -24,7 +24,7 @@ class CardPlaceGroup(private val number: Int, card: Card?): Group() {
 
         if (card == null) {
             //Placeholder
-            val st1 = ImageCache.getImage("wp2/placeholder.png")
+            val st1 = ImageCache.getImage(placeHolder.image)
             st1.width = 304f
             st1.height = 171f
             addActor(st1)

@@ -33,6 +33,7 @@ abstract class FullScreenDialog(private val drawSquare: Boolean, private val put
             closeButton.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
                     hide(null)
+                    closeButtonClicked()
                 }
             })
             closeButton.x = closeButtonX
@@ -41,6 +42,10 @@ abstract class FullScreenDialog(private val drawSquare: Boolean, private val put
             addActor(closeButton)
         }
         return super.show(stage)
+    }
+
+    open fun closeButtonClicked() {
+
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {

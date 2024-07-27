@@ -13,7 +13,7 @@ import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
 import java.util.*
 
-class HandCardsDialog(val colaCardCallBack: (colaCard: Card) -> Unit): FullScreenDialog(false) {
+class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(false) {
 
     private lateinit var handCards: List<Card>
     private lateinit var currentCard: CardGroup
@@ -61,6 +61,10 @@ class HandCardsDialog(val colaCardCallBack: (colaCard: Card) -> Unit): FullScree
         refreshButtons(handCards.first())
 
         return super.show(stage)
+    }
+
+    override fun closeButtonClicked() {
+        closeDialogCallback()
     }
 
     private fun moveRight() {

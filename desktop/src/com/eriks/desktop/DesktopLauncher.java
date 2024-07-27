@@ -6,9 +6,9 @@ import com.eriks.core.GameController;
 import com.eriks.core.TaskController;
 import com.eriks.core.ui.UIController;
 import com.eriks.core.util.LoggerConfig;
+import com.eriks.desktop.db.DesktopCardRepository;
 import com.eriks.desktop.db.DesktopPackageRepository;
 import com.eriks.desktop.db.DesktopParamRepository;
-import com.eriks.desktop.db.DesktopCardRepository;
 import com.eriks.desktop.db.DesktopTaskRepository;
 
 import java.util.logging.Level;

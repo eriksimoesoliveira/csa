@@ -48,7 +48,9 @@ class ShopDialog: FullScreenDialog(false) {
         spinner.y = 730f
         addActor(spinner)
 
-        totalLabel = Label("TOTAL: 1.000,00", UIController.skin, "Roboto-Bold-45")
+        totalFormatted = "TOTAL: " + UIUtil.decimalFormat.format(300)
+
+        totalLabel = Label(totalFormatted, UIController.skin, "Roboto-Bold-45")
         totalLabel.width = 500f
         totalLabel.x = 830f
         totalLabel.y = 300f

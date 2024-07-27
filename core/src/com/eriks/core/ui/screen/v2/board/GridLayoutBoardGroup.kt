@@ -1,26 +1,14 @@
-package com.eriks.core.ui.screen.v2
+package com.eriks.core.ui.screen.v2.board
 
-import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.eriks.core.GameController
 import com.eriks.core.objects.Family
-import com.eriks.core.ui.util.ImageCache
+import com.eriks.core.ui.screen.v2.CardPlaceGroup
 import com.eriks.core.ui.util.UIUtil
 
-class BoardGroup(private val family: Family): Group() {
+class GridLayoutBoardGroup(private val family: Family): BoardGroup(family) {
 
-    init {
-        setSize(1500f, 1080f)
-//        debug()
-
-        val background = ImageCache.getImage(family.bgName)
-        addActor(background)
-
-        buildCards()
-
-    }
-
-    private fun buildCards() {
+    override fun buildCards(family: Family) {
         val tbl = Table()
 
         var unitCounter = 1

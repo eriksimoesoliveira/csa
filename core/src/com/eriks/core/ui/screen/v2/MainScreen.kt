@@ -16,8 +16,10 @@ import com.badlogic.gdx.utils.Align
 import com.eriks.core.GameController
 import com.eriks.core.TaskController
 import com.eriks.core.objects.Family
-import com.eriks.core.objects.Card
 import com.eriks.core.ui.UIController
+import com.eriks.core.ui.screen.v2.board.BoardGroup
+import com.eriks.core.ui.screen.v2.board.FreeLayoutBoardGroup
+import com.eriks.core.ui.screen.v2.board.GridLayoutBoardGroup
 import com.eriks.core.ui.screen.v2.dialogs.*
 import com.eriks.core.ui.util.ColorCache
 import com.eriks.core.ui.util.ImageCache
@@ -26,7 +28,7 @@ import com.eriks.core.ui.util.UIUtil
 class MainScreen: CSAScreen() {
 
     private var currentCollection = Family.KILOWATT_CASE
-    private var currentBoard = BoardGroup(currentCollection)
+    private var currentBoard: BoardGroup = GridLayoutBoardGroup(currentCollection)
     private val boardPlace = Group()
     private val collectionTable = Table()
     private var scrollableCollections = ScrollPane(collectionTable)
@@ -34,7 +36,7 @@ class MainScreen: CSAScreen() {
     private val handCardsQty = Label(GameController.handCards.size.toString(), UIController.skin, "Roboto-Bold-45")
     private val tasksClaimQty = Label("0", UIController.skin, "Roboto-Bold-45")
     private val openPackageDialog = OpenPackageDialog()
-    private val handsCard2Dialog = HandCardsDialog(::colaCard)
+    private val handsCard2Dialog = HandCardsDialog(::closeHandDialogCallBack)
     private val creditsLabel = Label("CR 0.00", UIController.skin, "Roboto-Bold-38")
     private val albumValueLabel = Label("AV 0.00", UIController.skin, "Roboto-Bold-38")
     private val shopDialog = ShopDialog()
@@ -229,7 +231,10 @@ class MainScreen: CSAScreen() {
     private fun changeBoard(family: Family) {
         currentBoard.remove()
         currentCollection = family
-        currentBoard = BoardGroup(family)
+        currentBoard = when (family.layout) {
+            Family.Layout.GRID -> GridLayoutBoardGroup(family)
+            Family.Layout.FREE -> FreeLayoutBoardGroup(family)
+        }
         boardPlace.addActor(currentBoard)
         buildCollectionList()
     }
@@ -267,7 +272,8 @@ class MainScreen: CSAScreen() {
         return TextureRegionDrawable(texture)
     }
 
-    private fun colaCard(card: Card) {
-        changeBoard(card.bluePrint.family)
+    private fun closeHandDialogCallBack() {
+        changeBoard(currentCollection)
     }
+
 }

@@ -2,9 +2,9 @@ package com.eriks.core
 
 import com.eriks.core.config.CardGenerator
 import com.eriks.core.objects.*
+import com.eriks.core.repository.CardRepository
 import com.eriks.core.repository.PackageRepository
 import com.eriks.core.repository.ParamRepository
-import com.eriks.core.repository.CardRepository
 import com.eriks.core.ui.util.UIUtil
 import com.eriks.core.util.ExternalUtil
 import com.eriks.core.util.LoggerConfig
@@ -13,7 +13,7 @@ import java.util.*
 
 object GameController {
 
-    const val VERSION = "1.0.5"
+    const val VERSION = "1.1.2"
     var isVersionValid = false
 
     private val logger = LoggerConfig.getLogger()

@@ -4,9 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.eriks.core.objects.Rarity
 import com.eriks.core.objects.Card
 import com.eriks.core.objects.Condition
+import com.eriks.core.objects.Rarity
 import com.eriks.core.ui.UIController
 import com.eriks.core.ui.screen.v2.dialogs.FullScreenCardDialog
 import com.eriks.core.ui.util.ImageCache
@@ -22,9 +22,17 @@ class CardGroup(val card: Card, isBig: Boolean, enableFullScreen: Boolean = fals
 
     init {
         if (isBig) {
-            renderBig(bigWidth, bigHeight)
+            if (card.bluePrint.fullImage) {
+                renderBigFull(bigWidth, bigHeight)
+            } else {
+                renderBig(bigWidth, bigHeight)
+            }
         } else {
-            renderSmall(smallWidth, smallHeight)
+            if (card.bluePrint.fullImage) {
+                renderSmallFull(smallWidth, smallHeight)
+            } else {
+                renderSmall(smallWidth, smallHeight)
+            }
         }
 
         if (enableFullScreen) {
@@ -35,6 +43,38 @@ class CardGroup(val card: Card, isBig: Boolean, enableFullScreen: Boolean = fals
             })
         }
 
+    }
+
+    private fun renderBigFull(w: Float, h: Float) {
+        setSize(w, h)
+
+        val image = ImageCache.getImage(card.bluePrint.imageName)
+        image.width = w
+        image.height = h
+        UIUtil.centerByWidth(image, w)
+        addActor(image)
+
+        //Rarity Mask
+        val maskImage = when (card.weaponFloat) {
+            Condition.BATTLE_SCARRED -> "wp2/BS-MASK-2.png"
+            Condition.WELL_WORN -> "wp2/WW-MASK-2.png"
+            Condition.FIELD_TESTED -> "wp2/FT-MASK-2.png"
+            Condition.MINIMAL_WEAR -> "wp2/MW-MASK-2.png"
+            Condition.FACTORY_NEW -> "wp2/FN-MASK-2.png"
+        }
+        val mask = ImageCache.getImage(maskImage)
+        mask.width = w
+        mask.height = h
+        addActor(mask)
+
+        //Value
+        val valueLabel = Label(UIUtil.decimalFormat.format(card.value), UIController.skin, "YELLOW-64-WB")
+        addActor(valueLabel)
+
+        //Info
+        val infoLabel = Label(info, UIController.skin, "GREEN-40-WB")
+        addActor(infoLabel)
+        UIUtil.align_centerTopInParent(infoLabel)
     }
 
     private fun renderBig(w: Float, h: Float) {
@@ -168,6 +208,38 @@ class CardGroup(val card: Card, isBig: Boolean, enableFullScreen: Boolean = fals
             mask.height = h
             addActor(mask)
 //        }
+
+        //Value
+        val valueLabel = Label(UIUtil.decimalFormat.format(card.value), UIController.skin, "YELLOW-14-WB")
+        addActor(valueLabel)
+
+        //Info
+        val infoLabel = Label(info, UIController.skin, "GREEN-14-WB")
+        addActor(infoLabel)
+        UIUtil.align_centerTopInParent(infoLabel)
+    }
+
+    private fun renderSmallFull(w: Float, h: Float) {
+        setSize(w, h)
+
+        val image = ImageCache.getImage(card.bluePrint.imageName)
+        image.width = w
+        image.height = h
+        UIUtil.centerByWidth(image, w)
+        addActor(image)
+
+        //Rarity Mask
+        val maskImage = when (card.weaponFloat) {
+            Condition.BATTLE_SCARRED -> "wp2/BS-MASK-2.png"
+            Condition.WELL_WORN -> "wp2/WW-MASK-2.png"
+            Condition.FIELD_TESTED -> "wp2/FT-MASK-2.png"
+            Condition.MINIMAL_WEAR -> "wp2/MW-MASK-2.png"
+            Condition.FACTORY_NEW -> "wp2/FN-MASK-2.png"
+        }
+        val mask = ImageCache.getImage(maskImage)
+        mask.width = w
+        mask.height = h
+        addActor(mask)
 
         //Value
         val valueLabel = Label(UIUtil.decimalFormat.format(card.value), UIController.skin, "YELLOW-14-WB")
