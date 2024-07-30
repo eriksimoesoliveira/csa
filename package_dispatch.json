@@ -369,6 +369,76 @@
         "CHALK",
         "BLUE"
       ]
+    },
+    {
+      "id": "197220169",
+      "players": [
+        "BLUE",
+        "ELVIS",
+        "CNIDA",
+        "MARLON",
+        "FREE"
+      ]
+    },
+    {
+      "id": "197227538",
+      "players": [
+        "BLUE",
+        "MARLON",
+        "KICK",
+        "ELVIS",
+        "FREE"
+      ]
+    },
+    {
+      "id": "197395237",
+      "players": [
+        "RAFA",
+        "CNIDA",
+        "KICK",
+        "BLUE",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "197395237-V",
+      "players": [
+        "RAFA",
+        "CNIDA",
+        "KICK",
+        "BLUE",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "197401115",
+      "players": [
+        "BLUE",
+        "KICK",
+        "FREE",
+        "RAFA",
+        "CNIDA"
+      ]
+    },
+    {
+      "id": "197415057",
+      "players": [
+        "RAFA",
+        "FLAF",
+        "BLUE",
+        "MARLON",
+        "KICK"
+      ]
+    },
+    {
+      "id": "197415057-V",
+      "players": [
+        "RAFA",
+        "FLAF",
+        "BLUE",
+        "MARLON",
+        "KICK"
+      ]
     }
   ]
 }
