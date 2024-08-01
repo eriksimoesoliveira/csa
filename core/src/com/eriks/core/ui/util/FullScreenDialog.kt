@@ -1,4 +1,4 @@
-package com.eriks.core.ui.screen.v2.dialogs
+package com.eriks.core.ui.util
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
@@ -11,8 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.eriks.core.ui.UIController
-import com.eriks.core.ui.util.ColorCache
-import com.eriks.core.ui.util.ImageCache
 
 abstract class FullScreenDialog(private val drawSquare: Boolean, private val putClosedButton: Boolean = true): Dialog("", UIController.skin) {
     private var shapeRenderer = ShapeRenderer()

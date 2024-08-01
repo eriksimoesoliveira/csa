@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.0 (2024-08-01)
+> [!WARNING] **This version resets the save file**
+- Feature: Added Red Packages and White Packages
+- Project: Database file renamed and versions merged
+- Project: Overall code cleanups
+
 ## 1.2.0 (2024-07-27)
 - Feature: Added Mirage Board Tasks
 - Bug Fix: When closing HandCards the KILOWATT board will be selected

@@ -1,18 +1,19 @@
 package com.eriks.desktop.db
 
-import com.eriks.core.objects.PackageOrigin
 import com.eriks.core.objects.CardPackage
+import com.eriks.core.objects.PackageOrigin
 import com.eriks.core.repository.PackageRepository
 import java.time.Instant
 
 class DesktopPackageRepository: PackageRepository {
 
     override fun save(cardCardPackage: CardPackage) {
-        val prepareStatement = Database.conn.prepareStatement("INSERT OR IGNORE INTO PACKAGE (id, is_open, origin, timestamp) VALUES (?, ?, ?, ?)")
+        val prepareStatement = Database.conn.prepareStatement("INSERT OR IGNORE INTO PACKAGE (id, is_open, origin, timestamp, type) VALUES (?, ?, ?, ?, ?)")
         prepareStatement.setString(1, cardCardPackage.id)
         prepareStatement.setBoolean(2, cardCardPackage.isOpen)
         prepareStatement.setString(3, cardCardPackage.origin.name)
         prepareStatement.setLong(4, cardCardPackage.date.toEpochMilli())
+        prepareStatement.setString(5, cardCardPackage.type.name)
         prepareStatement.execute()
         prepareStatement.close()
     }
@@ -24,22 +25,31 @@ class DesktopPackageRepository: PackageRepository {
         prepareStatement.close()
     }
 
-    override fun getClosedPackages(): List<CardPackage> {
-        val ret = mutableListOf<CardPackage>()
-        val preparedStatement = Database.conn.prepareStatement("SELECT id, is_open, origin, timestamp FROM PACKAGE WHERE is_open is false")
+    override fun getClosedPackages(): Map<CardPackage.Type, List<CardPackage>> {
+        val ret = mutableMapOf<CardPackage.Type, MutableList<CardPackage>>()
+        CardPackage.Type.values().forEach { ret[it] = mutableListOf() }
+
+        val preparedStatement = Database.conn.prepareStatement("SELECT id, is_open, origin, timestamp, type FROM PACKAGE WHERE is_open is false")
         val resultSet = preparedStatement.executeQuery()
+
         while (resultSet.next()) {
-            ret.add(
+            val type = CardPackage.Type.valueOf(resultSet.getString("type"))
+            val list = ret[type] ?: mutableListOf()
+            list.add(
                 CardPackage(
-                resultSet.getString("id"),
-                resultSet.getBoolean("is_open"),
-                PackageOrigin.valueOf(resultSet.getString("origin")),
-                Instant.ofEpochMilli(resultSet.getLong("timestamp"))
+                    resultSet.getString("id"),
+                    resultSet.getBoolean("is_open"),
+                    PackageOrigin.valueOf(resultSet.getString("origin")),
+                    Instant.ofEpochMilli(resultSet.getLong("timestamp")),
+                    type
+                )
             )
-            )
+            ret[type] = list
         }
+
         resultSet.close()
         preparedStatement.close()
+
         return ret
     }
 
@@ -54,7 +64,8 @@ class DesktopPackageRepository: PackageRepository {
                     resultSet.getString("id"),
                     resultSet.getBoolean("is_open"),
                     PackageOrigin.valueOf(resultSet.getString("origin")),
-                    Instant.ofEpochMilli(resultSet.getLong("timestamp"))
+                    Instant.ofEpochMilli(resultSet.getLong("timestamp")),
+                    CardPackage.Type.valueOf(resultSet.getString("type"))
                 )
             )
         }

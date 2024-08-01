@@ -3,10 +3,10 @@ package com.eriks.android.repository
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
-import com.eriks.core.objects.Family
 import com.eriks.core.objects.Card
 import com.eriks.core.objects.CardBluePrint
 import com.eriks.core.objects.Condition
+import com.eriks.core.objects.Family
 import com.eriks.core.repository.CardRepository
 
 class AndroidCardRepository(private val database: SQLiteDatabase): CardRepository {

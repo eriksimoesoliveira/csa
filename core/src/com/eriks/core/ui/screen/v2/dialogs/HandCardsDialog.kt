@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.eriks.core.GameController
 import com.eriks.core.objects.Card
 import com.eriks.core.ui.screen.v2.CardGroup
+import com.eriks.core.ui.util.FullScreenDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
 import java.util.*
