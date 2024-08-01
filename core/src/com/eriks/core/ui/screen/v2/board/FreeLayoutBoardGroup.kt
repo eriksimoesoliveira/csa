@@ -104,4 +104,11 @@ class FreeLayoutBoardGroup(private val family: Family): BoardGroup(family) {
         }
     }
 
+    override fun refreshCards() {
+        children.filterIsInstance<CardPlaceGroup>().forEach {
+            if (it.card != null) {
+                it.st1.valueVisible = showConditions
+            }
+        }
+    }
 }

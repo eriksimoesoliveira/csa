@@ -60,31 +60,31 @@ class OpenPackageDialog: FullScreenDialog(true) {
             Actions.removeActor(packageOpenedIcon)
         ))
 
-        val card1 = CardGroup(cards[0], false, false, GameController.getCardInfo(cards[0]))
+        val card1 = CardGroup(cards[0], false, false, GameController.getCardInfo(cards[0]), true)
         card1.rotateBy(90f)
         card1.x = 810 + 230f
         card1.y = 320 + 180f
         addActor(card1)
 
-        val card2 = CardGroup(cards[1], false, false, GameController.getCardInfo(cards[1]))
+        val card2 = CardGroup(cards[1], false, false, GameController.getCardInfo(cards[1]), true)
         card2.rotateBy(90f)
         card2.x = 810 + 230f
         card2.y = 320 + 160f
         addActor(card2)
 
-        val card3 = CardGroup(cards[2], false, false, GameController.getCardInfo(cards[2]))
+        val card3 = CardGroup(cards[2], false, false, GameController.getCardInfo(cards[2]), true)
         card3.rotateBy(90f)
         card3.x = 810 + 230f
         card3.y = 320 + 140f
         addActor(card3)
 
-        val card4 = CardGroup(cards[3], false, false, GameController.getCardInfo(cards[3]))
+        val card4 = CardGroup(cards[3], false, false, GameController.getCardInfo(cards[3]), true)
         card4.rotateBy(90f)
         card4.x = 810 + 230f
         card4.y = 320 + 120f
         addActor(card4)
 
-        val card5 = CardGroup(cards[4], false, false, GameController.getCardInfo(cards[4]))
+        val card5 = CardGroup(cards[4], false, false, GameController.getCardInfo(cards[4]), true)
         card5.rotateBy(90f)
         card5.x = 810 + 230f
         card5.y = 320 + 100f
@@ -135,4 +135,7 @@ class OpenPackageDialog: FullScreenDialog(true) {
         addActor(packageOpenedIcon)
     }
 
+    override fun closeButtonClicked() {
+
+    }
 }

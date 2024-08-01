@@ -12,10 +12,14 @@ class FullScreenCardDialog(val card: Card): FullScreenDialog(false) {
     private lateinit var currentCard: CardGroup
 
     override fun show(stage: Stage?): Dialog {
-        currentCard = CardGroup(card, true, enableFullScreen = false, "")
+        currentCard = CardGroup(card, true, enableFullScreen = false, "", true)
         addActor(currentCard)
         UIUtil.centerInScreen(currentCard)
 
         return super.show(stage)
+    }
+
+    override fun closeButtonClicked() {
+
     }
 }

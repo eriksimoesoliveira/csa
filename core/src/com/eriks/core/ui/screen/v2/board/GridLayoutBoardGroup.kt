@@ -8,9 +8,10 @@ import com.eriks.core.ui.util.UIUtil
 
 class GridLayoutBoardGroup(private val family: Family): BoardGroup(family) {
 
-    override fun buildCards(family: Family) {
-        val tbl = Table()
+    private lateinit var tbl: Table
 
+    override fun buildCards(family: Family) {
+        tbl = Table()
         var unitCounter = 1
         for (i in family.fromId..family.toId) {
 
@@ -32,4 +33,11 @@ class GridLayoutBoardGroup(private val family: Family): BoardGroup(family) {
         addActor(tbl)
     }
 
+    override fun refreshCards() {
+        tbl.children.filterIsInstance<CardPlaceGroup>().forEach {
+            if (it.card != null) {
+                it.st1.valueVisible = showConditions
+            }
+        }
+    }
 }

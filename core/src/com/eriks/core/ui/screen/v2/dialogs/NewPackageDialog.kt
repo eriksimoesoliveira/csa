@@ -54,4 +54,7 @@ class NewPackageDialog: FullScreenDialog(true, false) {
         return super.show(stage)
     }
 
+    override fun closeButtonClicked() {
+
+    }
 }

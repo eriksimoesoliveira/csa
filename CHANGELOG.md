@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.0 (2024-08-01)
+- Feature: Added Condition information in the bottom of the Cards together with their values
+- Bug Fix: Fixed a bug where boards were not refreshing when placing cards
+
 ## 1.3.0 (2024-08-01)
 > [!WARNING] **This version resets the save file**
 - Feature: Added Red Packages and White Packages

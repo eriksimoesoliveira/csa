@@ -42,4 +42,7 @@ class WrongVersionDialog: FullScreenDialog(true, false) {
         return super.show(stage)
     }
 
+    override fun closeButtonClicked() {
+
+    }
 }

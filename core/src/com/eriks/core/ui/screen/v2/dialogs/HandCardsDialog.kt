@@ -28,7 +28,7 @@ class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(fal
     override fun show(stage: Stage?): Dialog {
         handCards = GameController.handCards
 
-        currentCard = CardGroup(handCards.first(), true, false, GameController.getCardInfo(handCards.first()))
+        currentCard = CardGroup(handCards.first(), true, false, GameController.getCardInfo(handCards.first()), true)
         addActor(currentCard)
         UIUtil.centerInScreen(currentCard)
 
@@ -73,7 +73,7 @@ class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(fal
         Collections.rotate(handCards, 1)
 
         //Create new instance at LEFT
-        nextCard = CardGroup(handCards.first(), true, false, GameController.getCardInfo(handCards.first()))
+        nextCard = CardGroup(handCards.first(), true, false, GameController.getCardInfo(handCards.first()), true)
         //Add it into the scene
         nextCard.y = currentCard.y
         addActor(nextCard)
@@ -100,7 +100,7 @@ class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(fal
         Collections.rotate(handCards, -1)
 
         //Create new instance at LEFT
-        nextCard = CardGroup(handCards.first(), true, false, GameController.getCardInfo(handCards.first()))
+        nextCard = CardGroup(handCards.first(), true, false, GameController.getCardInfo(handCards.first()), true)
         //Add it into the scene
         nextCard.y = currentCard.y
         addActor(nextCard)

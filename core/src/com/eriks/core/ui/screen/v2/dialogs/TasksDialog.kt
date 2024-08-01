@@ -129,5 +129,7 @@ class TasksDialog: FullScreenDialog(false) {
         scrollTableFill.add(mainTable).row()
     }
 
+    override fun closeButtonClicked() {
 
+    }
 }

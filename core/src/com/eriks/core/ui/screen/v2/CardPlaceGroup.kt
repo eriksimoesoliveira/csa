@@ -10,7 +10,9 @@ import com.eriks.core.ui.screen.v2.dialogs.FullScreenCardDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
 
-class CardPlaceGroup(private val number: Int, card: Card?, placeHolder: PlaceHolderEnum = PlaceHolderEnum.FULL): Group() {
+class CardPlaceGroup(private val number: Int, val card: Card?, placeHolder: PlaceHolderEnum = PlaceHolderEnum.FULL): Group() {
+
+    lateinit var st1: CardGroup
 
     init {
 
@@ -35,7 +37,7 @@ class CardPlaceGroup(private val number: Int, card: Card?, placeHolder: PlaceHol
             addActor(numberLabel)
         } else {
             //Card
-            val st1 = CardGroup(card, false, enableFullScreen = true, "")
+            st1 = CardGroup(card, false, enableFullScreen = true, "", false)
             st1.width = 304f
             st1.height = 171f
             addActor(st1)

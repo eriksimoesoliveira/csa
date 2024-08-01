@@ -183,4 +183,8 @@ class ShopDialog: FullScreenDialog(false) {
             }
         })
     }
+
+    override fun closeButtonClicked() {
+
+    }
 }
