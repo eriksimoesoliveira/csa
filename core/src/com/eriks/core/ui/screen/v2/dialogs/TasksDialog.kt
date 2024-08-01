@@ -9,6 +9,7 @@ import com.eriks.core.TaskController
 import com.eriks.core.objects.Family
 import com.eriks.core.objects.tasks.ProgressionTaskEnum
 import com.eriks.core.ui.UIController
+import com.eriks.core.ui.util.FullScreenDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
 

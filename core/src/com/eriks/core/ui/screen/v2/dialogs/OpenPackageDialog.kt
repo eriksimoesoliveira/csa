@@ -9,14 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.eriks.core.GameController
 import com.eriks.core.objects.Card
+import com.eriks.core.objects.CardPackage
 import com.eriks.core.ui.screen.v2.CardGroup
+import com.eriks.core.ui.util.FullScreenDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
 
 class OpenPackageDialog: FullScreenDialog(true) {
 
     lateinit var packageIcon: Image
-    lateinit var packageId: String
+    lateinit var cardPackage: CardPackage
 
     override fun show(stage: Stage?): Dialog {
 
@@ -26,13 +28,17 @@ class OpenPackageDialog: FullScreenDialog(true) {
     }
 
     private fun initializeContent() {
-        packageIcon = ImageCache.getImage("ui/package2.png")
+        packageIcon = when (cardPackage.type) {
+            CardPackage.Type.REGULAR -> ImageCache.getImage("ui/package2.png")
+            CardPackage.Type.RED -> ImageCache.getImage("ui/package-red.png")
+            CardPackage.Type.WHITE -> ImageCache.getImage("ui/package-white.png")
+        }
 
         UIUtil.resizeProportional(300f, packageIcon)
 
         packageIcon.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                GameController.openPackage(packageId, ::openPackageAnimation1)
+                GameController.openPackage(cardPackage, ::openPackageAnimation1)
             }
         })
         UIUtil.centerBySize(packageIcon, prefWidth, prefHeight)
@@ -42,10 +48,11 @@ class OpenPackageDialog: FullScreenDialog(true) {
     private fun openPackageAnimation1(cards: List<Card>) {
         packageIcon.remove()
 
-        val packageOpenedIcon = ImageCache.getImage("ui/package2-open.png")
-        UIUtil.resizeProportional(300f, packageOpenedIcon)
-        UIUtil.centerBySize(packageOpenedIcon, prefWidth, prefHeight)
-        addActor(packageOpenedIcon)
+        val packageOpenedIcon = when (cardPackage.type) {
+            CardPackage.Type.REGULAR -> ImageCache.getImage("ui/package2-open.png")
+            CardPackage.Type.RED -> ImageCache.getImage("ui/package-red-open.png")
+            CardPackage.Type.WHITE -> ImageCache.getImage("ui/package-white-open.png")
+        }
 
         packageOpenedIcon.addAction(SequenceAction(
             Actions.delay(.3f),
@@ -122,6 +129,10 @@ class OpenPackageDialog: FullScreenDialog(true) {
                 Actions.moveTo(1175f, 350f, .3f)
             )
         ))
+
+        UIUtil.resizeProportional(300f, packageOpenedIcon)
+        UIUtil.centerBySize(packageOpenedIcon, prefWidth, prefHeight)
+        addActor(packageOpenedIcon)
     }
 
 }

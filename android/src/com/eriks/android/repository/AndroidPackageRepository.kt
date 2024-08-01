@@ -4,8 +4,8 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CONFLICT_IGNORE
-import com.eriks.core.objects.PackageOrigin
 import com.eriks.core.objects.CardPackage
+import com.eriks.core.objects.PackageOrigin
 import com.eriks.core.repository.PackageRepository
 import java.time.Instant
 
@@ -19,18 +19,25 @@ class AndroidPackageRepository(private val database: SQLiteDatabase): PackageRep
         database.execSQL("UPDATE PACKAGE SET is_open = '1' WHERE id = '$packageId'")
     }
 
-    override fun getClosedPackages(): List<CardPackage> {
-        val ret = mutableListOf<CardPackage>()
-        val cursor = database.query("PACKAGE", arrayOf("id", "is_open", "origin", "timestamp"), "is_open is ?", arrayOf("0"), null, null, null)
+    override fun getClosedPackages(): Map<CardPackage.Type, List<CardPackage>> {
+        val ret = mutableMapOf<CardPackage.Type, MutableList<CardPackage>>()
+        CardPackage.Type.values().forEach { ret[it] = mutableListOf() }
+
+        val cursor = database.query("PACKAGE", arrayOf("id", "is_open", "origin", "timestamp", "type"), "is_open is ?", arrayOf("0"), null, null, null)
         while (cursor != null && cursor.moveToNext()) {
-            ret.add(
+            val type = CardPackage.Type.valueOf(cursor.getString(4))
+            val list = ret[type] ?: mutableListOf()
+
+            list.add(
                 CardPackage(
                     cursor.getString(0),
                     cursor.getString(1).toBoolean(),
                     PackageOrigin.valueOf(cursor.getString(2)),
-                    Instant.ofEpochMilli(cursor.getLong(3))
+                    Instant.ofEpochMilli(cursor.getLong(3)),
+                    CardPackage.Type.valueOf(cursor.getString(4))
                 )
             )
+            ret[type] = list
         }
         cursor?.close()
         return ret
@@ -42,6 +49,7 @@ class AndroidPackageRepository(private val database: SQLiteDatabase): PackageRep
         contentValue.put("is_open", cardCardPackage.isOpen)
         contentValue.put("origin", cardCardPackage.origin.name)
         contentValue.put("timestamp", cardCardPackage.date.toEpochMilli())
+        contentValue.put("type", cardCardPackage.type.name)
         return contentValue
     }
 
@@ -55,7 +63,8 @@ class AndroidPackageRepository(private val database: SQLiteDatabase): PackageRep
                     cursor.getString(cursor.getColumnIndexOrThrow("id")),
                     cursor.getInt(cursor.getColumnIndexOrThrow("is_open")) > 0,
                     PackageOrigin.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("origin"))),
-                    Instant.ofEpochMilli(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")))
+                    Instant.ofEpochMilli(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp"))),
+                    CardPackage.Type.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("type")))
                 )
             )
         }

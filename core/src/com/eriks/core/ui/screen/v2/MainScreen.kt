@@ -4,8 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -15,12 +19,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.eriks.core.GameController
 import com.eriks.core.TaskController
+import com.eriks.core.config.GeneralConfigs
+import com.eriks.core.objects.CardPackage
 import com.eriks.core.objects.Family
+import com.eriks.core.objects.PackageOrigin
 import com.eriks.core.ui.UIController
 import com.eriks.core.ui.screen.v2.board.BoardGroup
 import com.eriks.core.ui.screen.v2.board.FreeLayoutBoardGroup
 import com.eriks.core.ui.screen.v2.board.GridLayoutBoardGroup
 import com.eriks.core.ui.screen.v2.dialogs.*
+import com.eriks.core.ui.util.CircleButton
 import com.eriks.core.ui.util.ColorCache
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
@@ -32,7 +40,6 @@ class MainScreen: CSAScreen() {
     private val boardPlace = Group()
     private val collectionTable = Table()
     private var scrollableCollections = ScrollPane(collectionTable)
-    private val closedPackageQty = Label(GameController.closedPackages.size.toString(), UIController.skin, "Roboto-Bold-45")
     private val handCardsQty = Label(GameController.handCards.size.toString(), UIController.skin, "Roboto-Bold-45")
     private val tasksClaimQty = Label("0", UIController.skin, "Roboto-Bold-45")
     private val openPackageDialog = OpenPackageDialog()
@@ -41,16 +48,14 @@ class MainScreen: CSAScreen() {
     private val albumValueLabel = Label("AV 0.00", UIController.skin, "Roboto-Bold-38")
     private val shopDialog = ShopDialog()
     private val tasksDialog = TasksDialog()
-    private val showShopIcon = true
-//    private val newPackageDialog = NewPackageDialog()
-    private val packButton = ImageCache.getImage("ui/packbutton.png").apply {
-        width = 150f
-        height = 150f
-        isVisible = false
-    }
-    private val shopButton = ImageCache.getImage("ui/shoppingbutton.png").apply {
-        width = 150f
-        height = 150f
+
+    private var isHoveringPackButton = false
+
+    private val fakePackButton = CircleButton("ui/packbutton.png", 150f, 150f, GameController.closedPackagesQty) {}
+    private val packButton = CircleButton("ui/packbutton.png", 150f, 150f,null, ::packbuttonCallback)
+    private val packButtonRed = CircleButton("ui/packbutton-red.png", 150f, 150f, null, ::redPackbuttonCallback)
+    private val packButtonWhite = CircleButton("ui/packbutton-white.png", 150f, 150f, null, ::whitePackbuttonCallback)
+    private val shopButton = CircleButton("ui/shoppingbutton.png", 150f, 150f, null) { shopDialog.show(stage) }.apply {
         isVisible = false
     }
 
@@ -79,14 +84,133 @@ class MainScreen: CSAScreen() {
         boardPlace.x = 420f
         stage.addActor(boardPlace)
 
+        //Pack button WHITE
+        packButtonWhite.x = 1920f - packButtonWhite.width - 20f
+        packButtonWhite.y = 20f
+        stage.addActor(packButtonWhite)
+        packButtonWhite.addListener(object : InputListener() {
+            override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x - 100f, packButtonWhite.y, .3f),
+                ))
+                packButtonWhite.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x - 200f, packButtonWhite.y, .3f)
+                ))
+            }
+
+            override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = false
+                    },
+                    Actions.moveTo(packButton.x, packButton.y, .3f),
+                ))
+                packButtonWhite.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x, packButton.y, .3f)
+                ))
+            }
+        })
+
+        //Pack button RED
+        packButtonRed.x = 1920f - packButtonRed.width - 20f
+        packButtonRed.y = 20f
+        stage.addActor(packButtonRed)
+        packButtonRed.addListener(object : InputListener() {
+            override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x - 100f, packButtonWhite.y, .3f),
+                ))
+                packButtonWhite.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x - 200f, packButtonWhite.y, .3f)
+                ))
+            }
+
+            override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = false
+                    },
+                    Actions.moveTo(packButton.x, packButton.y, .3f),
+                ))
+                packButtonWhite.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x, packButton.y, .3f)
+                ))
+            }
+        })
+
         //Pack button
         packButton.x = 1920f - packButton.width - 20f
         packButton.y = 20f
         stage.addActor(packButton)
-        packButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                openPackageDialog.packageId = GameController.closedPackages[0].id
-                openPackageDialog.show(stage)
+        packButton.addListener(object : InputListener() {
+            override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x - 100f, packButtonWhite.y, .3f),
+                ))
+                packButtonWhite.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x - 200f, packButtonWhite.y, .3f)
+                ))
+            }
+
+            override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = false
+                    },
+                    Actions.moveTo(packButton.x, packButton.y, .3f),
+                ))
+                packButtonWhite.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    },
+                    Actions.moveTo(packButton.x, packButton.y, .3f)
+                ))
+            }
+        })
+
+        //Fake Pack button
+        fakePackButton.x = 1920f - fakePackButton.width - 20f
+        fakePackButton.y = 20f
+        stage.addActor(fakePackButton)
+        fakePackButton.addListener(object : InputListener() {
+            override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    }
+                ))
+            }
+
+            override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+                packButtonRed.addAction(SequenceAction(
+                    Actions.run {
+                        isHoveringPackButton = true
+                    }
+                ))
             }
         })
 
@@ -94,15 +218,6 @@ class MainScreen: CSAScreen() {
         shopButton.x = 1920f - shopButton.width - 20f
         shopButton.y = 20f
         stage.addActor(shopButton)
-        shopButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                shopDialog.show(stage)
-            }
-        })
-
-        closedPackageQty.x = packButton.x + 20f
-        closedPackageQty.y = packButton.y
-        stage.addActor(closedPackageQty)
 
         //Cards on hand button
         val cardsButton = ImageCache.getImage("ui/cardsbutton.png").apply {
@@ -130,7 +245,7 @@ class MainScreen: CSAScreen() {
         if (GameController.getNickName() == "1DEV1") {
             playerName.addListener(object : ClickListener() {
                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                    GameController.createNewPackage()
+                    GameController.createNewPackage(PackageOrigin.DAILY, CardPackage.Type.REGULAR)
                 }
             })
         }
@@ -172,6 +287,27 @@ class MainScreen: CSAScreen() {
         stage.addActor(version)
 
         super.show()
+    }
+
+    private fun packbuttonCallback() {
+        if (!GameController.closedPackages[CardPackage.Type.REGULAR]!!.isNullOrEmpty()) {
+            openPackageDialog.cardPackage = GameController.closedPackages[CardPackage.Type.REGULAR]!!.first()
+            openPackageDialog.show(stage)
+        }
+    }
+
+    private fun redPackbuttonCallback() {
+        if (!GameController.closedPackages[CardPackage.Type.RED]!!.isNullOrEmpty()) {
+            openPackageDialog.cardPackage = GameController.closedPackages[CardPackage.Type.RED]!!.first()
+            openPackageDialog.show(stage)
+        }
+    }
+
+    private fun whitePackbuttonCallback() {
+        if (!GameController.closedPackages[CardPackage.Type.WHITE]!!.isNullOrEmpty()) {
+            openPackageDialog.cardPackage = GameController.closedPackages[CardPackage.Type.WHITE]!!.first()
+            openPackageDialog.show(stage)
+        }
     }
 
     private fun buildCollectionList() {
@@ -242,7 +378,10 @@ class MainScreen: CSAScreen() {
     override fun render(delta: Float) {
         Gdx.gl.glClearColor(0.066f, 0.066f, 0.066f, 0f)
 
-        closedPackageQty.setText(GameController.closedPackages.size)
+        packButton.valueToShow = GameController.closedPackages[CardPackage.Type.REGULAR]!!.size
+        packButtonRed.valueToShow = GameController.closedPackages[CardPackage.Type.RED]!!.size
+        packButtonWhite.valueToShow = GameController.closedPackages[CardPackage.Type.WHITE]!!.size
+        fakePackButton.valueToShow = GameController.closedPackagesQty
         handCardsQty.setText(GameController.handCards.size)
         creditsLabel.setText("${GameController.playerCashFormatted}")
         albumValueLabel.setText("AV ${GameController.albumValueFormatted}")
@@ -253,10 +392,30 @@ class MainScreen: CSAScreen() {
         }
 
         if (GameController.closedPackagesQty > 0) {
-            packButton.isVisible = true
+            if (GameController.albumValue < GeneralConfigs.RED_PACKAGE_UNBLOCK_VALUE) {
+                fakePackButton.isVisible = false
+                packButtonRed.isVisible = false
+                packButtonWhite.isVisible = false
+                packButton.isVisible = true
+            } else {
+                if (isHoveringPackButton) {
+                    fakePackButton.isVisible = false
+                    packButton.isVisible = true
+                    packButtonRed.isVisible = true
+                    packButtonWhite.isVisible = true
+                } else {
+                    fakePackButton.isVisible = true
+                    packButton.isVisible = false
+                    packButtonRed.isVisible = false
+                    packButtonWhite.isVisible = false
+                }
+            }
             shopButton.isVisible = false
         } else {
+            fakePackButton.isVisible = false
             packButton.isVisible = false
+            packButtonRed.isVisible = false
+            packButtonWhite.isVisible = false
             shopButton.isVisible = true
         }
 

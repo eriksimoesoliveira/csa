@@ -16,20 +16,18 @@ object GameController {
     const val VERSION = "1.2.1"
     var isVersionValid = false
 
-    private val logger = LoggerConfig.getLogger()
-
     lateinit var packageRepository: PackageRepository
     lateinit var paramRepository: ParamRepository
     lateinit var cardRepository: CardRepository
 
     private var params = mapOf<ParamEnum, String>()
 
-    var closedPackages = listOf<CardPackage>()
+    var closedPackages = mapOf<CardPackage.Type, List<CardPackage>>()
     var closedPackagesQty = 0
     var handCards = listOf<Card>()
     var albumCards = mapOf<Family, Map<Int, Card>>()
     var playerCash = 0.0
-    private var albumValue = 0.0
+    var albumValue = 0.0
     var playerCashFormatted = ""
     var albumValueFormatted = ""
     var packsToAlert = 0
@@ -65,7 +63,7 @@ object GameController {
         val toCreateIds = packagesIdsFound.filter { it !in existingIds }
 
         toCreateIds.forEach {
-            createNewPackage(it, PackageOrigin.MATCH)
+            createNewPackage(it, PackageOrigin.MATCH, CardPackage.Type.REGULAR)
         }
         if (toCreateIds.size >= 0) {
             packsToAlert = toCreateIds.size
@@ -89,7 +87,7 @@ object GameController {
 
     private fun refreshClosedPackages() {
         closedPackages = packageRepository.getClosedPackages()
-        closedPackagesQty = closedPackages.size
+        closedPackagesQty = closedPackages.values.sumOf { it.size }
     }
 
     private fun refreshHandCards() {
@@ -117,13 +115,17 @@ object GameController {
         return params[ParamEnum.PLAYER_NAME]!!
     }
 
-    fun openPackage(packageId: String): List<Card> {
+    fun openPackage(cardPackage: CardPackage): List<Card> {
         var ret = mutableListOf<Card>()
         for (i in 0..4) {
-            ret.add(CardGenerator().generateRandom())
+            when (cardPackage.type) {
+                CardPackage.Type.REGULAR -> ret.add(CardGenerator.generateRegularPackageCard())
+                CardPackage.Type.RED -> ret.add(CardGenerator.generateRedPackageCard())
+                CardPackage.Type.WHITE -> ret.add(CardGenerator.generateWhitePackageCard())
+            }
         }
         //Open Package in repo
-        packageRepository.openPackage(packageId)
+        packageRepository.openPackage(cardPackage.id)
         //Save cards
         cardRepository.save(ret)
         refreshClosedPackages()
@@ -134,18 +136,16 @@ object GameController {
         return ret
     }
 
-    fun openPackage(packageId: String, callBack: (List<Card>) -> Unit) {
-        callBack(openPackage(packageId))
+    fun openPackage(cardPackage: CardPackage, callBack: (List<Card>) -> Unit) {
+        callBack(openPackage(cardPackage))
     }
 
-    fun createNewPackage(orign: PackageOrigin = PackageOrigin.GIFT) {
-        createNewPackage(UUID.randomUUID().toString(), orign)
-        refreshClosedPackages()
+    fun createNewPackage(orign: PackageOrigin, type: CardPackage.Type) {
+        createNewPackage(UUID.randomUUID().toString(), orign, type)
     }
 
-    fun createNewPackage(id: String, orign: PackageOrigin) {
-        logger.info("Saving package id: $id (if not exists)")
-        packageRepository.save(CardPackage(id, false, orign, Instant.now()))
+    fun createNewPackage(id: String, orign: PackageOrigin, type: CardPackage.Type) {
+        packageRepository.save(CardPackage(id, false, orign, Instant.now(), type))
         refreshClosedPackages()
     }
 
@@ -212,10 +212,16 @@ object GameController {
         TaskController.cardsSold((params[ParamEnum.CARDS_SOLD]!!).toInt())
     }
 
-    fun purchase(quantity: Int, total: Double) {
+    fun purchase(regularQuantity: Int, wwQuantity: Int, pinkPackage: Int, total: Double) {
         paramRepository.save(Param(ParamEnum.CASH, (params[ParamEnum.CASH]!!.toDouble() - total).toString()))
-        for (i in 1..quantity) {
-            createNewPackage(PackageOrigin.PURCHASE)
+        for (i in 1..regularQuantity) {
+            createNewPackage(PackageOrigin.PURCHASE, CardPackage.Type.REGULAR)
+        }
+        for (i in 1..wwQuantity) {
+            createNewPackage(PackageOrigin.PURCHASE, CardPackage.Type.RED)
+        }
+        for (i in 1..pinkPackage) {
+            createNewPackage(PackageOrigin.PURCHASE, CardPackage.Type.WHITE)
         }
         refreshCash()
         refreshClosedPackages()
