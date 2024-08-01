@@ -7,13 +7,12 @@ import com.eriks.core.repository.PackageRepository
 import com.eriks.core.repository.ParamRepository
 import com.eriks.core.ui.util.UIUtil
 import com.eriks.core.util.ExternalUtil
-import com.eriks.core.util.LoggerConfig
 import java.time.Instant
 import java.util.*
 
 object GameController {
 
-    const val VERSION = "1.2.1"
+    const val VERSION = "1.4.0"
     var isVersionValid = false
 
     lateinit var packageRepository: PackageRepository

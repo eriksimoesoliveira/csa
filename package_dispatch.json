@@ -499,6 +499,56 @@
         "BLUE",
         "FREE"
       ]
+    },
+    {
+      "id": "197825027",
+      "players": [
+        "KICK",
+        "CNIDA",
+        "BNO",
+        "BLUE",
+        "RAFA"
+      ]
+    },
+    {
+      "id": "197825027-V",
+      "players": [
+        "KICK",
+        "CNIDA",
+        "BNO",
+        "BLUE",
+        "RAFA"
+      ]
+    },
+    {
+      "id": "197830012",
+      "players": [
+        "RAFA",
+        "FLAF",
+        "ELVIS",
+        "BLUE",
+        "KICK"
+      ]
+    },
+    {
+      "id": "197830012-V",
+      "players": [
+        "RAFA",
+        "FLAF",
+        "ELVIS",
+        "BLUE",
+        "KICK"
+      ]
+    },
+    {
+      "id": "197833833",
+      "players": [
+        "FLAF",
+        "BLUE",
+        "ELVIS",
+        "KICK",
+        "RAFA"
+      ]
     }
   ]
 }
