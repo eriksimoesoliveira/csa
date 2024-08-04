@@ -421,6 +421,16 @@
       ]
     },
     {
+      "id": "Buzzzilla1",
+      "players": [
+        "ELVIS",
+        "FLAF",
+        "MARLON",
+        "FREE",
+        "RAFA"
+      ]
+    },
+    {
       "id": "197415057",
       "players": [
         "RAFA",
@@ -468,6 +478,26 @@
         "FREE",
         "CNIDA",
         "MARLON"
+      ]
+    },
+    {
+      "id": "wdgxander1",
+      "players": [
+        "ELVIS",
+        "FREE",
+        "RAFA",
+        "MARLON",
+        "BNO"
+      ]
+    },
+    {
+      "id": "wdgxander1-V",
+      "players": [
+        "ELVIS",
+        "FREE",
+        "RAFA",
+        "MARLON",
+        "BNO"
       ]
     },
     {
@@ -548,6 +578,116 @@
         "ELVIS",
         "KICK",
         "RAFA"
+      ]
+    },
+    {
+      "id": "198016482",
+      "players": [
+        "CHALK",
+        "KICK",
+        "FREE",
+        "CNIDA",
+        "BNO"
+      ]
+    },
+    {
+      "id": "198021693",
+      "players": [
+        "ELVIS",
+        "BLUE",
+        "KICK",
+        "CNIDA",
+        "BNO"
+      ]
+    },
+    {
+      "id": "198216253",
+      "players": [
+        "FREE",
+        "BNO",
+        "CHALK",
+        "CNIDA",
+        "KICK"
+      ]
+    },
+    {
+      "id": "198216253-V",
+      "players": [
+        "FREE",
+        "BNO",
+        "CHALK",
+        "CNIDA",
+        "KICK"
+      ]
+    },
+    {
+      "id": "198221200",
+      "players": [
+        "KICK",
+        "FREE",
+        "CNIDA",
+        "BNO",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "198226818",
+      "players": [
+        "ELVIS",
+        "KICK",
+        "BLUE",
+        "BNO",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "198226818-V",
+      "players": [
+        "ELVIS",
+        "KICK",
+        "BLUE",
+        "BNO",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "198231739",
+      "players": [
+        "ELVIS",
+        "KICK",
+        "BLUE",
+        "CHALK",
+        "BNO"
+      ]
+    },
+    {
+      "id": "DRN-and-Sons1",
+      "players": [
+        "RAFA",
+        "ELVIS",
+        "BLUE",
+        "INSID",
+        "FLAF"
+      ]
+    },
+    {
+      "id": "DRN-and-Sons-V",
+      "players": [
+        "RAFA",
+        "ELVIS",
+        "BLUE",
+        "INSID",
+        "FLAF"
+      ]
+    },
+    {
+      "id": "team_Nyrah1",
+      "players": [
+        "FREE",
+        "ELVIS",
+        "FLAF",
+        "BLUE",
+        "INSID"
       ]
     }
   ]
