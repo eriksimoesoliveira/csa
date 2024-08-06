@@ -1,8 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
-sourceCompatibility = 1.7
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceCompatibility = 1.8
+sourceSets.main.java.srcDirs = ["src/"]
 sourceSets.main.resources.srcDirs = ["../core/assets"]
 
 project.ext.mainClassName = "com.eriks.desktop.DesktopLauncher"
@@ -29,6 +29,7 @@ task dist(type: Jar) {
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     dependsOn configurations.runtimeClasspath
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }

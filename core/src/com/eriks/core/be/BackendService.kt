@@ -1,9 +1,6 @@
 package com.eriks.core.be
 
-import com.eriks.core.be.dto.AlbumValueUpdate
-import com.eriks.core.be.dto.LoginDto
-import com.eriks.core.be.dto.LoginDtoOut
-import com.eriks.core.be.dto.PackOpenDto
+import com.eriks.core.be.dto.*
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -21,7 +18,7 @@ import kotlinx.serialization.json.Json
 object BackendService {
 
     private const val baseUrl = "https://csabe-cb95c9877c4f.herokuapp.com/"
-    private const val pw = "123test123"
+    //private const val baseUrl = "http://localhost:8080/"
     private lateinit var login: LoginDtoOut
 
     private val client = HttpClient {
@@ -39,15 +36,25 @@ object BackendService {
         }
     }
 
-    suspend fun login(userId: String, userName: String) {
-
+    suspend fun login(userId: String, password: String) {
         val response: HttpResponse = client.post("$baseUrl/csa/login") {
             contentType(ContentType.Application.Json)
-            body = Json.encodeToString(LoginDto(userId, userName, pw))
+            body = Json.encodeToString(LoginDto(userId, password))
         }
 
         val responseBody = response.readText()
         login = Json.decodeFromString(responseBody)
+    }
+
+    suspend fun signUp(userName: String, password: String): LoginDtoOut {
+        val response: HttpResponse = client.post("$baseUrl/csa/sign-up") {
+            contentType(ContentType.Application.Json)
+            body = Json.encodeToString(SignUpDto(userName, password))
+        }
+
+        val responseBody = response.readText()
+        login = Json.decodeFromString(responseBody)
+        return login
     }
 
     suspend fun openPack(packOpenDto: PackOpenDto) {

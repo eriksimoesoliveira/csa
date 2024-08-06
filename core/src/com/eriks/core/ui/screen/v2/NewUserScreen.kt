@@ -11,6 +11,7 @@ import com.eriks.core.GameController
 import com.eriks.core.ui.UIController
 import com.eriks.core.ui.UIController.changeScreen
 import com.eriks.core.ui.util.UIUtil
+import java.util.*
 
 class NewUserScreen: CSAScreen() {
 
@@ -31,11 +32,11 @@ class NewUserScreen: CSAScreen() {
 
         button.width = 150f
         UIUtil.centerInScreen(button)
-        button.y = button.y - 10f
+        button.y -= 10f
         button.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (textField.text != null && textField.text.trim() != "") {
-                    GameController.newUserFlow(textField.text.toUpperCase())
+                    GameController.newUserFlow(textField.text.uppercase(Locale.getDefault()))
                     changeScreen(MainScreen())
                 }
             }

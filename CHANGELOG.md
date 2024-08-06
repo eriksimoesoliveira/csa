@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.0 (2024-08-06)
+- Feature: BE Integration
+- Bug FIx: FreeFormCards was showing small info labels
+
 ## 1.4.0 (2024-08-01)
 - Feature: Added Condition information in the bottom of the Cards together with their values
 - Bug Fix: Fixed a bug where boards were not refreshing when placing cards

@@ -40,21 +40,21 @@ class CardGroup(val card: Card, isBig: Boolean, enableFullScreen: Boolean = fals
     private fun renderCard(w: Float, h: Float, isBig: Boolean) {
         setSize(w, h)
         if (card.bluePrint.fullImage) {
-            renderFullImageCard(w, h)
+            renderFullImageCard(w, h, isBig)
         } else {
             renderRegularCard(w, h, isBig)
         }
     }
 
-    private fun renderFullImageCard(w: Float, h: Float) {
+    private fun renderFullImageCard(w: Float, h: Float, isBig: Boolean) {
         val image = ImageCache.getImage(card.bluePrint.imageName)
         image.width = w
         image.height = h
         UIUtil.centerByWidth(image, w)
         addActor(image)
         addMask(w, h)
-        addValueLabel(w, h, isBig = false)
-        addInfoLabel(false)
+        addValueLabel(w, h, isBig)
+        addInfoLabel(isBig)
     }
 
     private fun renderRegularCard(w: Float, h: Float, isBig: Boolean) {
@@ -124,7 +124,7 @@ class CardGroup(val card: Card, isBig: Boolean, enableFullScreen: Boolean = fals
         val weapon = ImageCache.getImage(card.bluePrint.imageName)
         weapon.width = w * 0.7f
         weapon.height = h * 0.7f
-        weapon.y = weapon.y + h / 4
+        weapon.y += h / 4
         UIUtil.centerByWidth(weapon, w)
         addActor(weapon)
     }

@@ -2,6 +2,7 @@ package com.eriks.core
 
 import com.eriks.core.be.BackendService
 import com.eriks.core.be.dto.AlbumValueUpdate
+import com.eriks.core.be.dto.LoginDtoOut
 import com.eriks.core.be.dto.PackOpenDto
 import com.eriks.core.config.CardGenerator
 import com.eriks.core.objects.*
@@ -19,7 +20,7 @@ import java.util.*
 
 object GameController {
 
-    const val VERSION = "1.4.0"
+    const val VERSION = "1.5.0"
     var isVersionValid = false
 
     lateinit var packageRepository: PackageRepository
@@ -103,11 +104,13 @@ object GameController {
     fun isNewUser(): Boolean = params[ParamEnum.PLAYER_NAME] == null
 
     fun newUserFlow(nickName: String) {
+        val password = UUID.randomUUID().toString()
+        val loginDtoOut = signUp(nickName, password)
         paramRepository.save(Param(ParamEnum.PLAYER_NAME, nickName))
-        paramRepository.save(Param(ParamEnum.PLAYER_ID, UUID.randomUUID().toString()))
+        paramRepository.save(Param(ParamEnum.PLAYER_ID, loginDtoOut.userId))
+        paramRepository.save(Param(ParamEnum.PLAYER_PASS, password))
         refreshParams()
         ExternalUtil.getPackageDispatch(params[ParamEnum.PLAYER_NAME]!!, ::packagesFound)
-        login()
     }
 
     private fun refreshParams() {
@@ -288,8 +291,13 @@ object GameController {
 
     fun login() {
         runBlocking {
-            BackendService.login(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_NAME]!!)
+            BackendService.login(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_PASS]!!)
         }
     }
 
+    private fun signUp(userName: String, password: String): LoginDtoOut {
+        return runBlocking {
+            BackendService.signUp(userName, password)
+        }
+    }
 }
