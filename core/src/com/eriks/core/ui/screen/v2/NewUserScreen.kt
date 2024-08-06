@@ -23,11 +23,11 @@ class NewUserScreen: CSAScreen() {
         textField.alignment = Align.center
 
         UIUtil.centerInScreen(labelTitle)
-        labelTitle.y = labelTitle.y + 150f
+        labelTitle.y += 150f
 
         textField.width = 300f
         UIUtil.centerInScreen(textField)
-        textField.y = textField.y +70
+        textField.y += 70
 
         button.width = 150f
         UIUtil.centerInScreen(button)
@@ -36,7 +36,7 @@ class NewUserScreen: CSAScreen() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (textField.text != null && textField.text.trim() != "") {
                     GameController.newUserFlow(textField.text.toUpperCase())
-                    changeScreen(SplashScreen())
+                    changeScreen(MainScreen())
                 }
             }
         })

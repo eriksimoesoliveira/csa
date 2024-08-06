@@ -1,3 +1,6 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
 sourceCompatibility = 1.7
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../core/assets"]
@@ -33,7 +36,26 @@ task dist(type: Jar) {
     with jar
 }
 
-
 dist.dependsOn classes
 
 eclipse.project.name = appName + "-desktop"
+
+dependencies {
+    implementation project(":core")
+    api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.5.1"
+}
+
+// Ensure the correct version of kotlinx-coroutines is used
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.jetbrains.kotlinx' && details.requested.name.contains('coroutines')) {
+            details.useVersion '1.5.1'
+        }
+    }
+}

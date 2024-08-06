@@ -21,11 +21,7 @@ object UIController: Game() {
 
         skin = FreeTypeFontGambi.loadSkin("skin/skin.json")
 
-        if (GameController.isNewUser()) {
-            changeScreen(NewUserScreen())
-        } else {
-            changeScreen(SplashScreen())
-        }
+        changeScreen(SplashScreen())
     }
 
     override fun dispose() {

@@ -5,5 +5,6 @@ enum class ParamEnum {
     CASH,
     PACKS_OPEN,
     CARDS_PLACED,
-    CARDS_SOLD
+    CARDS_SOLD,
+    PLAYER_ID
 }

@@ -1,17 +1,20 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
 android {
     buildToolsVersion "31.0.0"
     compileSdkVersion 31
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['../core/assets']
-            jniLibs.srcDirs = ['libs']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            aidl.srcDirs = ['src/main/aidl']
+            renderscript.srcDirs = ['src/main/rs']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = ['src/main/jniLibs']
         }
-
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
@@ -26,52 +29,41 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
-
-// called every time gradle gets executed, takes the native dependencies of
-// the natives configuration, and extracts them to the proper libs/ folders
-// so they get packed with the APK.
-task copyAndroidNatives {
-    doFirst {
-        //file("libs/armeabi/").mkdirs()
-        file("libs/armeabi-v7a/").mkdirs()
-        file("libs/arm64-v8a/").mkdirs()
-        file("libs/x86_64/").mkdirs()
-        file("libs/x86/").mkdirs()
-
-        configurations.natives.copy().files.each { jar ->
-            def outputDir = null
-            if (jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
-            if (jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
-            //if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
-            if(jar.name.endsWith("natives-x86_64.jar")) outputDir = file("libs/x86_64")
-            if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
-            if(outputDir != null) {
-                copy {
-                    from zipTree(jar)
-                    into outputDir
-                    include "*.so"
-                }
-            }
-        }
-    }
+dependencies {
+    implementation project(":core")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    implementation "io.ktor:ktor-client-core:2.0.0"
+    implementation "io.ktor:ktor-client-cio:2.0.0"
+    implementation "io.ktor:ktor-client-logging:2.0.0"
+    implementation "io.ktor:ktor-client-serialization:2.0.0"
+    implementation "io.ktor:ktor-client-android:2.0.0"
 }
 
-tasks.whenTaskAdded { packageTask ->
-    if (packageTask.name.contains("package")) {
-        packageTask.dependsOn 'copyAndroidNatives'
+tasks.register('copyAndroidNatives', Copy) {
+    into 'libs'
+    from {
+        configurations.natives.files.collect { zipTree(it) }
+    }
+    include '*.so'
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name.contains('package')) {
+        task.dependsOn copyAndroidNatives
     }
 }
 
@@ -94,7 +86,109 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.eriks.android.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.eriks.android/.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
+
+
+//android {
+//    buildToolsVersion "31.0.0"
+//    compileSdkVersion 31
+//    sourceSets {
+//        main {
+//            manifest.srcFile 'AndroidManifest.xml'
+//            java.srcDirs = ['src']
+//            aidl.srcDirs = ['src']
+//            renderscript.srcDirs = ['src']
+//            res.srcDirs = ['res']
+//            assets.srcDirs = ['../core/assets']
+//            jniLibs.srcDirs = ['libs']
+//        }
+//
+//    }
+//    packagingOptions {
+//        exclude 'META-INF/robovm/ios/robovm.xml'
+//    }
+//    defaultConfig {
+//        applicationId "com.eriks.csa"
+//        minSdkVersion 26
+//        targetSdkVersion 31
+//        versionCode 1
+//        versionName "1.0"
+//    }
+//    buildTypes {
+//        release {
+//            minifyEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
+//}
+//
+//
+//// called every time gradle gets executed, takes the native dependencies of
+//// the natives configuration, and extracts them to the proper libs/ folders
+//// so they get packed with the APK.
+//task copyAndroidNatives {
+//    doFirst {
+//        //file("libs/armeabi/").mkdirs()
+//        file("libs/armeabi-v7a/").mkdirs()
+//        file("libs/arm64-v8a/").mkdirs()
+//        file("libs/x86_64/").mkdirs()
+//        file("libs/x86/").mkdirs()
+//
+//        configurations.natives.copy().files.each { jar ->
+//            def outputDir = null
+//            if (jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
+//            if (jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
+//            //if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
+//            if(jar.name.endsWith("natives-x86_64.jar")) outputDir = file("libs/x86_64")
+//            if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+//            if(outputDir != null) {
+//                copy {
+//                    from zipTree(jar)
+//                    into outputDir
+//                    include "*.so"
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//tasks.whenTaskAdded { packageTask ->
+//    if (packageTask.name.contains("package")) {
+//        packageTask.dependsOn 'copyAndroidNatives'
+//    }
+//}
+//
+//task run(type: Exec) {
+//    def path
+//    def localProperties = project.file("../local.properties")
+//    if (localProperties.exists()) {
+//        Properties properties = new Properties()
+//        localProperties.withInputStream { instr ->
+//            properties.load(instr)
+//        }
+//        def sdkDir = properties.getProperty('sdk.dir')
+//        if (sdkDir) {
+//            path = sdkDir
+//        } else {
+//            path = "$System.env.ANDROID_HOME"
+//        }
+//    } else {
+//        path = "$System.env.ANDROID_HOME"
+//    }
+//
+//    def adb = path + "/platform-tools/adb"
+//    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.eriks.android.AndroidLauncher'
+//}
+//
+//eclipse.project.name = appName + "-android"

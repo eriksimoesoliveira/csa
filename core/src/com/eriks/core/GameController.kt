@@ -1,5 +1,8 @@
 package com.eriks.core
 
+import com.eriks.core.be.BackendService
+import com.eriks.core.be.dto.AlbumValueUpdate
+import com.eriks.core.be.dto.PackOpenDto
 import com.eriks.core.config.CardGenerator
 import com.eriks.core.objects.*
 import com.eriks.core.repository.CardRepository
@@ -7,6 +10,10 @@ import com.eriks.core.repository.PackageRepository
 import com.eriks.core.repository.ParamRepository
 import com.eriks.core.ui.util.UIUtil
 import com.eriks.core.util.ExternalUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.Instant
 import java.util.*
 
@@ -97,8 +104,10 @@ object GameController {
 
     fun newUserFlow(nickName: String) {
         paramRepository.save(Param(ParamEnum.PLAYER_NAME, nickName))
+        paramRepository.save(Param(ParamEnum.PLAYER_ID, UUID.randomUUID().toString()))
         refreshParams()
         ExternalUtil.getPackageDispatch(params[ParamEnum.PLAYER_NAME]!!, ::packagesFound)
+        login()
     }
 
     private fun refreshParams() {
@@ -131,6 +140,23 @@ object GameController {
         refreshHandCards()
         saveParam(Param.increment(ParamEnum.PACKS_OPEN, params))
         TaskController.packOpen((params[ParamEnum.PACKS_OPEN]!!).toInt())
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                BackendService.openPack(PackOpenDto(
+                    params[ParamEnum.PLAYER_ID]!!,
+                    params[ParamEnum.PLAYER_NAME]!!,
+                    cardPackage.id,
+                    cardPackage.type.name,
+                    cardPackage.origin.name))
+                // Handle the response, update the UI on the main thread if needed
+                CoroutineScope(Dispatchers.Main).launch {
+                    // Update UI here
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
 
         return ret
     }
@@ -166,6 +192,18 @@ object GameController {
             saveParam(Param.increment(ParamEnum.CARDS_PLACED, params))
         }
         TaskController.cardPlaced(totalCardsInAlbum(), albumValue)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                BackendService.albumValueUpdate(AlbumValueUpdate(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_NAME]!!, albumValue))
+                // Handle the response, update the UI on the main thread if needed
+                CoroutineScope(Dispatchers.Main).launch {
+                    // Update UI here
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun totalCardsInAlbum(): Int {
@@ -246,6 +284,12 @@ object GameController {
 
     fun getTotalCardsPlaced(): Int {
         return params[ParamEnum.CARDS_PLACED]!!.toInt()
+    }
+
+    fun login() {
+        runBlocking {
+            BackendService.login(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_NAME]!!)
+        }
     }
 
 }

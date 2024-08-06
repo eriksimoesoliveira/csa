@@ -5,14 +5,11 @@ buildscript {
         mavenLocal()
         mavenCentral()
         gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.12'
+        classpath 'com.android.tools.build:gradle:7.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-
     }
 }
 
@@ -50,7 +47,6 @@ allprojects {
 project(":desktop") {
     apply plugin: "kotlin"
 
-
     dependencies {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
@@ -62,10 +58,30 @@ project(":desktop") {
 }
 
 project(":android") {
-    apply plugin: "android"
+    apply plugin: "com.android.application"
     apply plugin: "kotlin-android"
 
     configurations { natives }
+
+    android {
+        compileSdkVersion 30
+        defaultConfig {
+            applicationId "com.eriks.android"
+            minSdkVersion 16
+            targetSdkVersion 30
+            versionCode 1
+            versionName "1.0"
+        }
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+        }
+        sourceSets {
+            main.java.srcDirs += 'src/main/kotlin'
+        }
+    }
 
     dependencies {
         implementation project(":core")
@@ -81,30 +97,10 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
         api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-//        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
-
-    }
-}
-
-project(":ios") {
-    apply plugin: "kotlin"
-    apply plugin: "robovm"
-
-
-    dependencies {
-        implementation project(":core")
-        api "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
-        api "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
-        api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
-        api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     }
 }
 
@@ -119,11 +115,10 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.36.0.3'
         implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0"
+        implementation "io.ktor:ktor-client-core:1.6.3"
+        implementation "io.ktor:ktor-client-cio:1.6.3"
+        implementation "io.ktor:ktor-client-serialization:1.6.3"
+        implementation "io.ktor:ktor-client-logging:1.6.3"
+
     }
 }
-
-/*
-tasks.withType<JavaCompile> {
-    options.compilerArgs.addAll(arrayOf("--release", "8"))
-}
- */
