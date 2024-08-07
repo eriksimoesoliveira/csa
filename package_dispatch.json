@@ -729,6 +729,116 @@
         "CNIDA",
         "MARLON"
       ]
+    },
+    {
+      "id": "198646222",
+      "players": [
+        "BLUE",
+        "KICK",
+        "FLAF",
+        "CNIDA",
+        "MARK"
+      ]
+    },
+    {
+      "id": "198646222-V",
+      "players": [
+        "BLUE",
+        "KICK",
+        "FLAF",
+        "CNIDA",
+        "MARK"
+      ]
+    },
+    {
+      "id": "198651225",
+      "players": [
+        "KICK",
+        "CNIDA",
+        "BLUE",
+        "FLAF",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "198774201",
+      "players": [
+        "ELVIS",
+        "RAFA",
+        "BLUE",
+        "CNIDA",
+        "PRO"
+      ]
+    },
+    {
+      "id": "198774201-V",
+      "players": [
+        "ELVIS",
+        "RAFA",
+        "BLUE",
+        "CNIDA",
+        "PRO"
+      ]
+    },
+    {
+      "id": "198840070",
+      "players": [
+        "CNIDA",
+        "KICK",
+        "BLUE",
+        "FERRAZ",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "198840070-V",
+      "players": [
+        "CNIDA",
+        "KICK",
+        "BLUE",
+        "FERRAZ",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "team_egL441",
+      "players": [
+        "ELVIS",
+        "RAFA",
+        "BLUE",
+        "CNIDA",
+        "PRO"
+      ]
+    },
+    {
+      "id": "team_Dally5611",
+      "players": [
+        "BLUE",
+        "FLAF",
+        "PRO",
+        "CNIDA",
+        "RAFA"
+      ]
+    },
+    {
+      "id": "198846945",
+      "players": [
+        "ELVIS",
+        "BNO",
+        "KICK",
+        "FLAF",
+        "CHALK"
+      ]
+    },
+    {
+      "id": "199038795",
+      "players": [
+        "KICK",
+        "RAFA",
+        "CNIDA",
+        "CHALK",
+        "MARLON"
+      ]
     }
   ]
 }
