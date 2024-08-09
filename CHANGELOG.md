@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.6.0 (2024-08-08)
+- Feature: New Package Dispatch system
+- Feature: New Version system
+
 ## 1.5.0 (2024-08-06)
 - Feature: BE Integration
 - Bug FIx: FreeFormCards was showing small info labels

@@ -3,6 +3,7 @@ package com.eriks.core
 import com.eriks.core.be.BackendService
 import com.eriks.core.be.dto.AlbumValueUpdate
 import com.eriks.core.be.dto.LoginDtoOut
+import com.eriks.core.be.dto.OPAPackageDto
 import com.eriks.core.be.dto.PackOpenDto
 import com.eriks.core.config.CardGenerator
 import com.eriks.core.objects.*
@@ -10,17 +11,22 @@ import com.eriks.core.repository.CardRepository
 import com.eriks.core.repository.PackageRepository
 import com.eriks.core.repository.ParamRepository
 import com.eriks.core.ui.util.UIUtil
-import com.eriks.core.util.ExternalUtil
+import com.eriks.core.util.LoggerConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.Instant
 import java.util.*
+import java.util.logging.Level
+import java.util.logging.Logger
+import kotlin.system.exitProcess
 
 object GameController {
 
-    const val VERSION = "1.5.0"
+    private val LOGGER: Logger = LoggerConfig.getLogger()
+
+    const val VERSION = "1.6.0"
     var isVersionValid = false
 
     lateinit var packageRepository: PackageRepository
@@ -40,13 +46,9 @@ object GameController {
     var packsToAlert = 0
 
     fun startup() {
-        ExternalUtil.getVersion(::versionCheck)
-
         refreshParams()
 
-        if (!isNewUser()) {
-            ExternalUtil.getPackageDispatch(params[ParamEnum.PLAYER_NAME]!!, ::packagesFound)
-        } else {
+        if (isNewUser()) {
             paramRepository.save(Param(ParamEnum.CASH, "0.00"))
         }
 
@@ -58,22 +60,19 @@ object GameController {
         TaskController.startup()
     }
 
-    private fun versionCheck(version: String) {
-        isVersionValid = version == VERSION
+    fun versionCheck() {
+        runBlocking {
+            val version = BackendService.getVersion()
+            isVersionValid = version.contains(VERSION)
+        }
     }
 
-    private fun packagesFound(packagesIdsFound: List<String>) {
-        val existingPackages  = packageRepository.getPackagesById(packagesIdsFound)
-
-        val existingIds = existingPackages.map { it.id }
-
-        val toCreateIds = packagesIdsFound.filter { it !in existingIds }
-
-        toCreateIds.forEach {
-            createNewPackage(it, PackageOrigin.MATCH, CardPackage.Type.REGULAR)
+    private fun packagesFound(packages: List<OPAPackageDto>) {
+        packages.forEach {
+            createNewPackage(it.packName, PackageOrigin.MATCH, CardPackage.Type.REGULAR)
         }
-        if (toCreateIds.size >= 0) {
-            packsToAlert = toCreateIds.size
+        if (packages.size >= 0) {
+            packsToAlert = packages.size
         }
     }
 
@@ -110,7 +109,13 @@ object GameController {
         paramRepository.save(Param(ParamEnum.PLAYER_ID, loginDtoOut.userId))
         paramRepository.save(Param(ParamEnum.PLAYER_PASS, password))
         refreshParams()
-        ExternalUtil.getPackageDispatch(params[ParamEnum.PLAYER_NAME]!!, ::packagesFound)
+    }
+
+    fun checkForPackages() {
+        runBlocking {
+            val packages = BackendService.getPackages(params[ParamEnum.PLAYER_NAME]!!)
+            packagesFound(packages)
+        }
     }
 
     private fun refreshParams() {
@@ -152,12 +157,10 @@ object GameController {
                     cardPackage.id,
                     cardPackage.type.name,
                     cardPackage.origin.name))
-                // Handle the response, update the UI on the main thread if needed
-                CoroutineScope(Dispatchers.Main).launch {
-                    // Update UI here
-                }
             } catch (e: Exception) {
                 e.printStackTrace()
+                LOGGER.log(Level.SEVERE,"Error when submitting openPack", e)
+                exitProcess(0)
             }
         }
 
@@ -199,12 +202,10 @@ object GameController {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 BackendService.albumValueUpdate(AlbumValueUpdate(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_NAME]!!, albumValue))
-                // Handle the response, update the UI on the main thread if needed
-                CoroutineScope(Dispatchers.Main).launch {
-                    // Update UI here
-                }
             } catch (e: Exception) {
                 e.printStackTrace()
+                LOGGER.log(Level.SEVERE,"Error when submitting albumValue", e)
+                exitProcess(0)
             }
         }
     }

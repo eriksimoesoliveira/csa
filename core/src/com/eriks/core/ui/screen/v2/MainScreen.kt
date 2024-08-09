@@ -286,6 +286,8 @@ class MainScreen: CSAScreen() {
 
         stage.addActor(version)
 
+        GameController.checkForPackages()
+
         super.show()
     }
 

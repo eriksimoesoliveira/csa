@@ -9,16 +9,14 @@ import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 object BackendService {
 
-    private const val baseUrl = "https://csabe-cb95c9877c4f.herokuapp.com/"
-    //private const val baseUrl = "http://localhost:8080/"
+    private const val baseUrl = "https://csabe-cb95c9877c4f.herokuapp.com"
+//    private const val baseUrl = "http://localhost:8080"
     private lateinit var login: LoginDtoOut
 
     private val client = HttpClient {
@@ -74,15 +72,26 @@ object BackendService {
         }
     }
 
-    suspend fun ping(): Boolean {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = client.get<HttpResponse>("$baseUrl/csa/ping")
-                response.status == HttpStatusCode.OK
-            } catch (e: Exception) {
-                e.printStackTrace()
-                false
-            }
+    suspend fun getPackages(userName: String): List<OPAPackageDto> {
+        val response: HttpResponse = client.get("$baseUrl/csa/fetch-packages/$userName") {
+            contentType(ContentType.Application.Json)
+            header("token", login.token)
         }
+
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
+
+        val responseBody = response.readText()
+        return json.decodeFromString(responseBody)
+    }
+
+    suspend fun getVersion(): List<String> {
+        val response: HttpResponse = client.get("$baseUrl/csa/version") {
+            contentType(ContentType.Application.Json)
+        }
+
+        val responseBody = response.readText()
+        return Json.decodeFromString(responseBody)
     }
 }

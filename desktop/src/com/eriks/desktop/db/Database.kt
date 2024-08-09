@@ -2,12 +2,14 @@ package com.eriks.desktop.db
 
 import com.eriks.core.repository.Tables
 import com.eriks.core.repository.Tables.DATABASE_NAME
+import com.eriks.core.util.LoggerConfig
 import java.io.File
 import java.nio.file.Paths
 import java.sql.Connection
 import java.sql.DatabaseMetaData
 import java.sql.DriverManager
 import java.sql.SQLException
+import java.util.logging.Level
 
 object Database {
 
@@ -26,12 +28,11 @@ object Database {
             }
 
             conn = DriverManager.getConnection("jdbc:sqlite:$dbPath")
-//            println("Database connected at $dbPath")
             setupDatabase()
-            addNewColumnIfNotExists()
 
         } catch (e: SQLException) {
             e.printStackTrace()
+            LoggerConfig.getLogger().log(Level.SEVERE, "SQL Error", e)
         } catch (e: Exception) {
             e.printStackTrace()
             throw RuntimeException("Failed to initialize database", e)
@@ -46,6 +47,7 @@ object Database {
                 stmt.close()
             } catch (e: SQLException) {
                 e.printStackTrace()
+                LoggerConfig.getLogger().log(Level.SEVERE, "SQL Error", e)
             }
         }
     }
@@ -57,6 +59,7 @@ object Database {
             rs.next()
         } catch (e: SQLException) {
             e.printStackTrace()
+            LoggerConfig.getLogger().log(Level.SEVERE, "SQL Error", e)
             false
         }
     }
