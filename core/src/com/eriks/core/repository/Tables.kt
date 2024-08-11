@@ -2,9 +2,9 @@ package com.eriks.core.repository
 
 object Tables {
 
-    const val DATABASE_NAME = "csav2.db"
+    const val DATABASE_NAME = "csav3.db"
 
-    const val CREATE_TABLE_PACKAGE = "CREATE TABLE IF NOT EXISTS PACKAGE(id text primary key, is_open bool, origin text, timestamp NUMERIC, type text)"
+    const val CREATE_TABLE_PACKAGE = "CREATE TABLE IF NOT EXISTS PACKAGE(id text primary key, is_open bool, origin text, timestamp NUMERIC, type text, description text)"
     const val DROP_TABLE_PACKAGE = "DROP TABLE PACKAGE"
 
     const val CREATE_TABLE_PARAM = "CREATE TABLE IF NOT EXISTS PARAM(name text primary key, value text)"

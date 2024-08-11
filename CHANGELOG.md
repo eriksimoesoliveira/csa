@@ -1,10 +1,15 @@
 # Change Log
 
+## 1.7.0 (2024-08-10)
+- Feature: New package description
+- Bug Fix: Backend now is blocking and can break the operation
+
 ## 1.6.0 (2024-08-08)
 - Feature: New Package Dispatch system
 - Feature: New Version system
 
 ## 1.5.0 (2024-08-06)
+> [!WARNING] **IOS and Android no long supported**
 - Feature: BE Integration
 - Bug FIx: FreeFormCards was showing small info labels
 

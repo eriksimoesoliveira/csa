@@ -1,5 +1,6 @@
 package com.eriks.core.ui.screen.v2.dialogs
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -12,6 +13,9 @@ import com.eriks.core.ui.screen.v2.CardGroup
 import com.eriks.core.ui.util.FullScreenDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(false) {
@@ -145,21 +149,17 @@ class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(fal
         ))
         glueImageButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                //Checa se pode ser colado
                 if (canGlueCard) {
-                    //GameController cola
-                    GameController.glueCard(card)
-                    //Fecha o dialog
-                    //hide(null)  //REMOVED for QUALITY OF LIFE IMPROVEMENT
-                    //Chama o MainScreen e seta a board e viewpoint de onde esta a figurinha
-                    //Faz um hightlight
-//                    colaCardCallBack(card)
-
-                    handCards = GameController.handCards
-                    if (handCards.isEmpty()) {
-                        hide(null)
-                    } else {
-                        moveLeft()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        GameController.glueCard(card)
+                        Gdx.app.postRunnable {
+                            handCards = GameController.handCards
+                            if (handCards.isEmpty()) {
+                                hide(null)
+                            } else {
+                                moveLeft()
+                            }
+                        }
                     }
                 }
             }

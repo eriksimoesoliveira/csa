@@ -12,10 +12,9 @@ import com.eriks.core.repository.PackageRepository
 import com.eriks.core.repository.ParamRepository
 import com.eriks.core.ui.util.UIUtil
 import com.eriks.core.util.LoggerConfig
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.time.Instant
 import java.util.*
 import java.util.logging.Level
@@ -26,7 +25,7 @@ object GameController {
 
     private val LOGGER: Logger = LoggerConfig.getLogger()
 
-    const val VERSION = "1.6.0"
+    const val VERSION = "1.7.0"
     var isVersionValid = false
 
     lateinit var packageRepository: PackageRepository
@@ -69,7 +68,7 @@ object GameController {
 
     private fun packagesFound(packages: List<OPAPackageDto>) {
         packages.forEach {
-            createNewPackage(it.packName, PackageOrigin.MATCH, CardPackage.Type.REGULAR)
+            createNewPackage(it.packName, PackageOrigin.MATCH, CardPackage.Type.REGULAR, it.description)
         }
         if (packages.size >= 0) {
             packsToAlert = packages.size
@@ -131,7 +130,27 @@ object GameController {
         return params[ParamEnum.PLAYER_NAME]!!
     }
 
-    fun openPackage(cardPackage: CardPackage): List<Card> {
+    suspend fun openPackage(cardPackage: CardPackage): List<Card> {
+        runBlocking {
+            try {
+                withContext(Dispatchers.IO) {
+                    BackendService.openPack(
+                        PackOpenDto(
+                            params[ParamEnum.PLAYER_ID]!!,
+                            params[ParamEnum.PLAYER_NAME]!!,
+                            cardPackage.id,
+                            cardPackage.type.name,
+                            cardPackage.origin.name
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                LOGGER.log(Level.SEVERE,"Error when submitting openPack", e)
+                exitProcess(0)
+            }
+        }
+
         var ret = mutableListOf<Card>()
         for (i in 0..4) {
             when (cardPackage.type) {
@@ -149,38 +168,37 @@ object GameController {
         saveParam(Param.increment(ParamEnum.PACKS_OPEN, params))
         TaskController.packOpen((params[ParamEnum.PACKS_OPEN]!!).toInt())
 
-        CoroutineScope(Dispatchers.IO).launch {
+        return ret
+    }
+
+    fun createNewPackage(orign: PackageOrigin, type: CardPackage.Type) {
+        createNewPackage(UUID.randomUUID().toString(), orign, type, "")
+    }
+
+    private fun createNewPackage(id: String, orign: PackageOrigin, type: CardPackage.Type, description: String) {
+        packageRepository.save(CardPackage(id, false, orign, Instant.now(), type, description))
+        refreshClosedPackages()
+    }
+
+    suspend fun glueCard(card: Card) {
+        runBlocking {
             try {
-                BackendService.openPack(PackOpenDto(
-                    params[ParamEnum.PLAYER_ID]!!,
-                    params[ParamEnum.PLAYER_NAME]!!,
-                    cardPackage.id,
-                    cardPackage.type.name,
-                    cardPackage.origin.name))
+                withContext(Dispatchers.IO) {
+                    BackendService.albumValueUpdate(
+                        AlbumValueUpdate(
+                            params[ParamEnum.PLAYER_ID]!!,
+                            params[ParamEnum.PLAYER_NAME]!!,
+                            albumValue
+                        )
+                    )
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
-                LOGGER.log(Level.SEVERE,"Error when submitting openPack", e)
+                LOGGER.log(Level.SEVERE,"Error when submitting albumValue", e)
                 exitProcess(0)
             }
         }
 
-        return ret
-    }
-
-    fun openPackage(cardPackage: CardPackage, callBack: (List<Card>) -> Unit) {
-        callBack(openPackage(cardPackage))
-    }
-
-    fun createNewPackage(orign: PackageOrigin, type: CardPackage.Type) {
-        createNewPackage(UUID.randomUUID().toString(), orign, type)
-    }
-
-    fun createNewPackage(id: String, orign: PackageOrigin, type: CardPackage.Type) {
-        packageRepository.save(CardPackage(id, false, orign, Instant.now(), type))
-        refreshClosedPackages()
-    }
-
-    fun glueCard(card: Card) {
         //Vende a anterior
         val cardInAlbum = albumCards[card.bluePrint.family]?.get(card.bluePrint.albumPosition)
         if (cardInAlbum != null) {
@@ -198,16 +216,6 @@ object GameController {
             saveParam(Param.increment(ParamEnum.CARDS_PLACED, params))
         }
         TaskController.cardPlaced(totalCardsInAlbum(), albumValue)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                BackendService.albumValueUpdate(AlbumValueUpdate(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_NAME]!!, albumValue))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                LOGGER.log(Level.SEVERE,"Error when submitting albumValue", e)
-                exitProcess(0)
-            }
-        }
     }
 
     private fun totalCardsInAlbum(): Int {
@@ -292,13 +300,17 @@ object GameController {
 
     fun login() {
         runBlocking {
-            BackendService.login(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_PASS]!!)
+            withContext(Dispatchers.Default) {
+                BackendService.login(params[ParamEnum.PLAYER_ID]!!, params[ParamEnum.PLAYER_PASS]!!)
+            }
         }
     }
 
     private fun signUp(userName: String, password: String): LoginDtoOut {
         return runBlocking {
-            BackendService.signUp(userName, password)
+            withContext(Dispatchers.Default) {
+                BackendService.signUp(userName, password)
+            }
         }
     }
 }

@@ -1,19 +1,25 @@
 package com.eriks.core.ui.screen.v2.dialogs
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.eriks.core.GameController
 import com.eriks.core.objects.Card
 import com.eriks.core.objects.CardPackage
+import com.eriks.core.ui.UIController
 import com.eriks.core.ui.screen.v2.CardGroup
 import com.eriks.core.ui.util.FullScreenDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class OpenPackageDialog: FullScreenDialog(true) {
 
@@ -38,11 +44,25 @@ class OpenPackageDialog: FullScreenDialog(true) {
 
         packageIcon.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                GameController.openPackage(cardPackage, ::openPackageAnimation1)
+                CoroutineScope(Dispatchers.Main).launch {
+                    val cards = GameController.openPackage(cardPackage)
+                    Gdx.app.postRunnable {
+                        openPackageAnimation1(cards)
+                    }
+                }
             }
         })
         UIUtil.centerBySize(packageIcon, prefWidth, prefHeight)
         addActor(packageIcon)
+
+        val descriptionLabel = if (cardPackage.description.contains("VICTORY")) {
+            Label(cardPackage.description, UIController.skin,  "GREEN-14-WB")
+        } else {
+            Label(cardPackage.description, UIController.skin,  "ORANGE-14")
+        }
+        UIUtil.centerInScreen(descriptionLabel)
+        descriptionLabel.y -= 300f
+        addActor(descriptionLabel)
     }
 
     private fun openPackageAnimation1(cards: List<Card>) {
