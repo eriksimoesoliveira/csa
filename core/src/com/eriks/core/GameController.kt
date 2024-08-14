@@ -25,7 +25,7 @@ object GameController {
 
     private val LOGGER: Logger = LoggerConfig.getLogger()
 
-    const val VERSION = "1.7.0"
+    const val VERSION = "1.7.1"
     var isVersionValid = false
 
     lateinit var packageRepository: PackageRepository
