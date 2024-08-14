@@ -3,6 +3,7 @@ package com.eriks.core.ui.screen.v2.dialogs
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
@@ -13,12 +14,17 @@ import com.eriks.core.ui.screen.v2.CardGroup
 import com.eriks.core.ui.util.FullScreenDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
+import com.eriks.core.util.LoggerConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import java.util.logging.Level
+import java.util.logging.Logger
 
 class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(false) {
+
+    private val LOGGER: Logger = LoggerConfig.getLogger()
 
     private lateinit var handCards: List<Card>
     private lateinit var currentCard: CardGroup
@@ -150,15 +156,23 @@ class HandCardsDialog(val closeDialogCallback: () -> Unit): FullScreenDialog(fal
         glueImageButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 if (canGlueCard) {
+                    glueImageButton.touchable = Touchable.disabled
                     CoroutineScope(Dispatchers.Main).launch {
-                        GameController.glueCard(card)
-                        Gdx.app.postRunnable {
-                            handCards = GameController.handCards
-                            if (handCards.isEmpty()) {
-                                hide(null)
-                            } else {
-                                moveLeft()
+                        try {
+                            GameController.glueCard(card)
+                            Gdx.app.postRunnable {
+                                handCards = GameController.handCards
+                                if (handCards.isEmpty()) {
+                                    hide(null)
+                                } else {
+                                    moveLeft()
+                                }
                             }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            LOGGER.log(Level.SEVERE,"Error when submitting openPack", e)
+                        } finally {
+                            glueImageButton.touchable = Touchable.enabled
                         }
                     }
                 }

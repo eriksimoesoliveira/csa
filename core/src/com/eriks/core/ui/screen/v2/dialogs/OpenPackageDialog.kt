@@ -3,6 +3,7 @@ package com.eriks.core.ui.screen.v2.dialogs
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
@@ -17,11 +18,16 @@ import com.eriks.core.ui.screen.v2.CardGroup
 import com.eriks.core.ui.util.FullScreenDialog
 import com.eriks.core.ui.util.ImageCache
 import com.eriks.core.ui.util.UIUtil
+import com.eriks.core.util.LoggerConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.logging.Level
+import java.util.logging.Logger
 
 class OpenPackageDialog: FullScreenDialog(true) {
+
+    private val LOGGER: Logger = LoggerConfig.getLogger()
 
     lateinit var packageIcon: Image
     lateinit var cardPackage: CardPackage
@@ -44,10 +50,21 @@ class OpenPackageDialog: FullScreenDialog(true) {
 
         packageIcon.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                // Disable the icon to prevent multiple clicks
+                packageIcon.touchable = Touchable.disabled
+
                 CoroutineScope(Dispatchers.Main).launch {
-                    val cards = GameController.openPackage(cardPackage)
-                    Gdx.app.postRunnable {
-                        openPackageAnimation1(cards)
+                    try {
+                        val cards = GameController.openPackage(cardPackage)
+                        Gdx.app.postRunnable {
+                            openPackageAnimation1(cards)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        LOGGER.log(Level.SEVERE,"Error when submitting openPack", e)
+                    } finally {
+                        // Re-enable the icon if you want it to be clickable again after the animation
+                        packageIcon.touchable = Touchable.enabled
                     }
                 }
             }

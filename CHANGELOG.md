@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.7.1 (2024-08-13)
+- Bug Fix: Fix bug that user could open the same package multiple times when clicking too fast
+
 ## 1.7.0 (2024-08-10)
 - Feature: New package description
 - Bug Fix: Backend now is blocking and can break the operation
