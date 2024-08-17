@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.7.2 (2024-08-13)
+- Bug Fix: Album value in the BE is updated correctly
+
 ## 1.7.1 (2024-08-13)
 - Bug Fix: Fix bug that user could open the same package multiple times when clicking too fast
 

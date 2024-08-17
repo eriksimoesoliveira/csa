@@ -25,7 +25,7 @@ object GameController {
 
     private val LOGGER: Logger = LoggerConfig.getLogger()
 
-    const val VERSION = "1.7.1"
+    const val VERSION = "1.7.2"
     var isVersionValid = false
 
     lateinit var packageRepository: PackageRepository
@@ -181,24 +181,6 @@ object GameController {
     }
 
     suspend fun glueCard(card: Card) {
-        runBlocking {
-            try {
-                withContext(Dispatchers.IO) {
-                    BackendService.albumValueUpdate(
-                        AlbumValueUpdate(
-                            params[ParamEnum.PLAYER_ID]!!,
-                            params[ParamEnum.PLAYER_NAME]!!,
-                            albumValue
-                        )
-                    )
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                LOGGER.log(Level.SEVERE,"Error when submitting albumValue", e)
-                exitProcess(0)
-            }
-        }
-
         //Vende a anterior
         val cardInAlbum = albumCards[card.bluePrint.family]?.get(card.bluePrint.albumPosition)
         if (cardInAlbum != null) {
@@ -216,6 +198,23 @@ object GameController {
             saveParam(Param.increment(ParamEnum.CARDS_PLACED, params))
         }
         TaskController.cardPlaced(totalCardsInAlbum(), albumValue)
+        runBlocking {
+            try {
+                withContext(Dispatchers.IO) {
+                    BackendService.albumValueUpdate(
+                        AlbumValueUpdate(
+                            params[ParamEnum.PLAYER_ID]!!,
+                            params[ParamEnum.PLAYER_NAME]!!,
+                            albumValue
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                LOGGER.log(Level.SEVERE,"Error when submitting albumValue", e)
+                exitProcess(0)
+            }
+        }
     }
 
     private fun totalCardsInAlbum(): Int {
