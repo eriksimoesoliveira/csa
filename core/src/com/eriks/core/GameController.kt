@@ -66,6 +66,10 @@ object GameController {
         }
     }
 
+    suspend fun getRanking(): List<Ranking> {
+        return BackendService.getRanking()
+    }
+
     private fun packagesFound(packages: List<OPAPackageDto>) {
         packages.forEach {
             createNewPackage(it.packName, PackageOrigin.MATCH, CardPackage.Type.REGULAR, it.description)

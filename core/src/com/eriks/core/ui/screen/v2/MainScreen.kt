@@ -48,6 +48,7 @@ class MainScreen: CSAScreen() {
     private val albumValueLabel = Label("AV 0.00", UIController.skin, "Roboto-Bold-38")
     private val shopDialog = ShopDialog()
     private val tasksDialog = TasksDialog()
+    private val rankingDialog = RankingDialog()
 
     private var isHoveringPackButton = false
 
@@ -260,6 +261,20 @@ class MainScreen: CSAScreen() {
         albumValueLabel.x = 20f
         albumValueLabel.y = 140f
         stage.addActor(albumValueLabel)
+
+        //Ranking button
+        val rankButton = ImageCache.getImage("ui/rankingbutton.png").apply {
+            width = 70f
+            height = 70f
+        }
+        rankButton.x = 330f
+        rankButton.y = 127f
+        stage.addActor(rankButton)
+        rankButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                rankingDialog.show(stage)
+            }
+        })
 
         //Achievements button
         val achievButton = ImageCache.getImage("ui/achievementsbutton.png").apply {

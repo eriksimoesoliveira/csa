@@ -1,6 +1,7 @@
 package com.eriks.core.be
 
 import com.eriks.core.be.dto.*
+import com.eriks.core.objects.Ranking
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -93,5 +94,19 @@ object BackendService {
 
         val responseBody = response.readText()
         return Json.decodeFromString(responseBody)
+    }
+
+    suspend fun getRanking(): List<Ranking> {
+        val response: HttpResponse = client.get("$baseUrl/csa/ranking") {
+            contentType(ContentType.Application.Json)
+            header("token", login.token)
+        }
+
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
+
+        val responseBody = response.readText()
+        return json.decodeFromString(responseBody)
     }
 }
