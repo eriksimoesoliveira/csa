@@ -12,7 +12,8 @@ enum class Family(val fromId: Int,
     RECOIL_CASE(41, 60, "Recoil Case", "Recoil", "collection/recoil-logo.png", "collection/RECOIL-BACKGROUND.png", Layout.GRID),
     NIGHTMARE_CASE(61, 80, "Dreams & Nightmare Case", "D&N", "collection/dream-logo.png", "collection/DN-BACKGROUND.png", Layout.GRID),
     AGENTS_1(81, 100, "Agents Collection 1", "Agents 1", "collection/agents1-logo.png", "collection/AGENTS1-BACKGROUND.png", Layout.GRID),
-    MIRAGE(101, 120, "Mirage", "Mirage", "collection/mirage-logo.png", "collection/mirage-bg.png", Layout.FREE);
+    MIRAGE(101, 120, "Mirage", "Mirage", "collection/mirage-logo.png", "collection/mirage-bg.png", Layout.FREE),
+    SNAKEBITE_CASE(121, 140, "Snakebite Case", "Snakebite", "collection/snakebite-logo.png", "collection/snakebite-bg.png", Layout.GRID);
 
     enum class Layout {
         GRID,

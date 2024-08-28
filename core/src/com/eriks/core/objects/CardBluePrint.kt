@@ -149,4 +149,29 @@ enum class CardBluePrint(val friendlyName: String,
     MIRAGE_119("Awp 2", Family.MIRAGE, Rarity.COVERT, 119, "wp2/WEAPONS/MIRAGE/119.png", true),
     MIRAGE_120("Awp 3", Family.MIRAGE, Rarity.COVERT, 120, "wp2/WEAPONS/MIRAGE/120.png", true),
 
+    //SNAKEBITE
+    SNAKEBITE_CASE("Snakebite Case", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 121, "wp2/WEAPONS/SNAKEBITE/snakebite-case.png"),
+    SG_HEAVYMETAL("SG 553 | Heavy Metal", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 122, "wp2/WEAPONS/SNAKEBITE/SSG-Heavy-Metal.png"),
+    GLOCK_CLEARPOLYMER("Glock-18 | Clear Polymer", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 123, "wp2/WEAPONS/SNAKEBITE/GLOCK-Clear-Polymer.png"),
+    M249_OSIPR("M249 | O.S.I.P.R.", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 124, "wp2/WEAPONS/SNAKEBITE/M249-osipr.png"),
+    CZ_CIRCAETUS("CZ75-Auto | Circaetus", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 125, "wp2/WEAPONS/SNAKEBITE/CZ-Circaetus.png"),
+    UMP_OSCILLATOR("UMP-45 | Oscillator", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 126, "wp2/WEAPONS/SNAKEBITE/UMP-Oscillator.png"),
+    R8_JUNKYARD("R8 Revolver | Junk Yard", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 127, "wp2/WEAPONS/SNAKEBITE/R8-Junk Yard.png"),
+    NOVA_WINDBLOWN("Nova | Windblown", Family.SNAKEBITE_CASE, Rarity.MIL_SPEC, 128, "wp2/WEAPONS/SNAKEBITE/NOVA-Windblown.png"),
+
+    P250_CYBERSHELL("P250 | Cyber Shell", Family.SNAKEBITE_CASE, Rarity.RESTRICTED, 129, "wp2/WEAPONS/SNAKEBITE/P250-Cyber Shell.png"),
+    NEGEV_DEVTEXTURE("Negev | dev_texture", Family.SNAKEBITE_CASE, Rarity.RESTRICTED, 130, "wp2/WEAPONS/SNAKEBITE/NEGEV-dev_texture.png"),
+    MAC10_BUTTONMASHER("MAC-10 | Button Masher", Family.SNAKEBITE_CASE, Rarity.RESTRICTED, 131, "wp2/WEAPONS/SNAKEBITE/MAC10-Button Masher.png"),
+    EAGLE_TRIGGERDISCIPLINE("Desert Eagle | Trigger Discipline", Family.SNAKEBITE_CASE, Rarity.RESTRICTED, 132, "wp2/WEAPONS/SNAKEBITE/EAGLE-Trigger Discipline.png"),
+    AK_SLATE("AK-47 | Slate", Family.SNAKEBITE_CASE, Rarity.RESTRICTED, 133, "wp2/WEAPONS/SNAKEBITE/AK-Slate.png"),
+
+    MP9_FOODCHAIN("MP9 | Food Chain", Family.SNAKEBITE_CASE, Rarity.CLASSIFIED, 134, "wp2/WEAPONS/SNAKEBITE/MP9-Food Chain.png"),
+    XM_XOXO("XM1014 | XOXO", Family.SNAKEBITE_CASE, Rarity.CLASSIFIED, 135, "wp2/WEAPONS/SNAKEBITE/XM-XOXO.png"),
+    GALIL_CHROMATICABERRATION("Galil AR | Chromatic Aberration", Family.SNAKEBITE_CASE, Rarity.CLASSIFIED, 136, "wp2/WEAPONS/SNAKEBITE/GALIL-Chromatic Aberration.png"),
+
+    USP_THETRAITOR("USP-S | The Traitor", Family.SNAKEBITE_CASE, Rarity.COVERT, 137, "wp2/WEAPONS/SNAKEBITE/USP-The Traitor.png"),
+    M4A4_INLIVINGCOLOR("M4A4 | In Living Color", Family.SNAKEBITE_CASE, Rarity.COVERT, 138, "wp2/WEAPONS/SNAKEBITE/M4A4-In Living Color.png"),
+
+    SPORTSGLOVES_VICE("Sports Glove | Vice", Family.SNAKEBITE_CASE, Rarity.COVERT_RARE, 139, "wp2/WEAPONS/SNAKEBITE/sportgloves-vice.png"),
+    BAYONET_DOPPLER("Bayonet | Doppler", Family.SNAKEBITE_CASE, Rarity.COVERT_RARE, 140, "wp2/WEAPONS/SNAKEBITE/bayonet-doppler.png"),
 }

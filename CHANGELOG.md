@@ -2,6 +2,7 @@
 
 ## 1.8.0 (2024-08-XX)
 - Feature: Added Ranking
+- Feature: Added Snakebite Collection
 
 ## 1.7.2 (2024-08-13)
 - Bug Fix: Album value in the BE is updated correctly
