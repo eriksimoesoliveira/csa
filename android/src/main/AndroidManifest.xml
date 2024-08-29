@@ -7,11 +7,11 @@
         android:icon="@mipmap/ic_launcher"
         android:isGame="true"
         android:appCategory="game"
-        android:label="@string/app_name"
+        android:label="CSA"
         android:theme="@style/GdxTheme" >
         <activity
             android:name="com.eriks.android.AndroidLauncher"
-            android:label="@string/app_name" 
+            android:label="CSA"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
             android:exported="true">

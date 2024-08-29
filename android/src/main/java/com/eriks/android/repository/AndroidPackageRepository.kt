@@ -23,7 +23,7 @@ class AndroidPackageRepository(private val database: SQLiteDatabase): PackageRep
         val ret = mutableMapOf<CardPackage.Type, MutableList<CardPackage>>()
         CardPackage.Type.values().forEach { ret[it] = mutableListOf() }
 
-        val cursor = database.query("PACKAGE", arrayOf("id", "is_open", "origin", "timestamp", "type"), "is_open is ?", arrayOf("0"), null, null, null)
+        val cursor = database.query("PACKAGE", arrayOf("id", "is_open", "origin", "timestamp", "type", "description"), "is_open is ?", arrayOf("0"), null, null, null)
         while (cursor != null && cursor.moveToNext()) {
             val type = CardPackage.Type.valueOf(cursor.getString(4))
             val list = ret[type] ?: mutableListOf()
@@ -34,7 +34,8 @@ class AndroidPackageRepository(private val database: SQLiteDatabase): PackageRep
                     cursor.getString(1).toBoolean(),
                     PackageOrigin.valueOf(cursor.getString(2)),
                     Instant.ofEpochMilli(cursor.getLong(3)),
-                    CardPackage.Type.valueOf(cursor.getString(4))
+                    CardPackage.Type.valueOf(cursor.getString(4)),
+                    cursor.getString(5)
                 )
             )
             ret[type] = list
@@ -64,7 +65,8 @@ class AndroidPackageRepository(private val database: SQLiteDatabase): PackageRep
                     cursor.getInt(cursor.getColumnIndexOrThrow("is_open")) > 0,
                     PackageOrigin.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("origin"))),
                     Instant.ofEpochMilli(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp"))),
-                    CardPackage.Type.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("type")))
+                    CardPackage.Type.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("type"))),
+                    cursor.getString(cursor.getColumnIndexOrThrow("description"))
                 )
             )
         }

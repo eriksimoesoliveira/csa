@@ -16,8 +16,8 @@ import kotlinx.serialization.json.Json
 
 object BackendService {
 
-//    private const val baseUrl = "https://csabe-cb95c9877c4f.herokuapp.com"
-    private const val baseUrl = "http://localhost:8080"
+    private const val baseUrl = "https://csabe-cb95c9877c4f.herokuapp.com"
+//    private const val baseUrl = "http://localhost:8080"
     private lateinit var login: LoginDtoOut
 
     private val client = HttpClient {
