@@ -56,7 +56,7 @@ class RankingDialog: FullScreenDialog(false) {
         mainTable.clear()
 
         mainTable.top()
-        mainTable.padLeft(50f)
+        mainTable.padLeft(10f)
 //        mainTable.debug()
         ranking.forEachIndexed { index, ranking ->
             val font = if (ranking.userName == GameController.getNickName()) {
@@ -64,9 +64,10 @@ class RankingDialog: FullScreenDialog(false) {
             } else {
                 "Roboto-Bold-45"
             }
-            mainTable.add(Label((index + 1).toString(), UIController.skin, font)).left().padRight(40f).padBottom(10f)
-            mainTable.add(Label(ranking.userName, UIController.skin, font)).left().width(400f).padBottom(10f)
+            mainTable.add(Label("#" + (index + 1).toString(), UIController.skin, font)).left().padRight(40f).padBottom(10f)
+            mainTable.add(Label(ranking.userName, UIController.skin, font)).left().width(150f).padBottom(10f)
             mainTable.add(Label(UIUtil.decimalFormat.format(ranking.value), UIController.skin, font)).right().padLeft(100f).padBottom(10f)
+            mainTable.add(Label(ranking.openPacks.toString() + " / " + ranking.totalPacks, UIController.skin, font)).right().padLeft(50f).padBottom(10f)
             mainTable.row()
         }
 
